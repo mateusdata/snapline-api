@@ -10,6 +10,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from './common/guards/auth/auth-guard';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { WebsocketsModule } from './modules/websockets/websockets.module';
+import { GameModule } from './modules/game/game.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { WebsocketsModule } from './modules/websockets/websockets.module';
     AuthModule,
     WebsocketsModule,
     PrismaModule,
+    GameModule,
   ],
   controllers: [AppController],
   providers: [

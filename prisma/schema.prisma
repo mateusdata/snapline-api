@@ -1,6 +1,6 @@
 generator client {
-  provider     = "prisma-client"
-  output       = "../src/generated/prisma"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -19,31 +19,32 @@ enum UserStatus {
 }
 
 model User {
-  id              String     @id @default(uuid(7))
-  name            String
-  email           String     @unique
-  password        String?     
-  avatar          String?
-  role            Role   @default(USER)
-  status          UserStatus @default(ACTIVE)
-  lastLoginAt     DateTime?
-  gemas           Gem[]
+  id           String           @id @default(uuid(7))
+  name         String
+  email        String           @unique
+  password     String?
+  avatar       String?
+  role         Role             @default(USER)
+  status       UserStatus       @default(ACTIVE)
+  gems         Int              @default(500)
+  lastLoginAt  DateTime?
+  transactions GemTransaction[]
+  deletedAt    DateTime?
+  deletedBy    String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
 
-  deletedAt       DateTime?
-  deletedBy       String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
   @@map("users")
-
 }
 
-model Gem {
+// histórico de transações (opcional mas útil)
+model GemTransaction {
   id        String   @id @default(uuid(7))
-  amount    Int
+  amount    Int     
+  reason    String  
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@map("gems")
-}
 
+  @@map("gem_transactions")
+}

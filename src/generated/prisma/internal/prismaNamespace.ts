@@ -385,7 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Gem: 'Gem'
+  GemTransaction: 'GemTransaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +401,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "gem"
+    modelProps: "user" | "gemTransaction"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -479,77 +479,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Gem: {
-      payload: Prisma.$GemPayload<ExtArgs>
-      fields: Prisma.GemFieldRefs
+    GemTransaction: {
+      payload: Prisma.$GemTransactionPayload<ExtArgs>
+      fields: Prisma.GemTransactionFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.GemFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload> | null
+          args: Prisma.GemTransactionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.GemFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>
+          args: Prisma.GemTransactionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>
         }
         findFirst: {
-          args: Prisma.GemFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload> | null
+          args: Prisma.GemTransactionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.GemFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>
+          args: Prisma.GemTransactionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>
         }
         findMany: {
-          args: Prisma.GemFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>[]
+          args: Prisma.GemTransactionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>[]
         }
         create: {
-          args: Prisma.GemCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>
+          args: Prisma.GemTransactionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>
         }
         createMany: {
-          args: Prisma.GemCreateManyArgs<ExtArgs>
+          args: Prisma.GemTransactionCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.GemCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>[]
+          args: Prisma.GemTransactionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>[]
         }
         delete: {
-          args: Prisma.GemDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>
+          args: Prisma.GemTransactionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>
         }
         update: {
-          args: Prisma.GemUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>
+          args: Prisma.GemTransactionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>
         }
         deleteMany: {
-          args: Prisma.GemDeleteManyArgs<ExtArgs>
+          args: Prisma.GemTransactionDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.GemUpdateManyArgs<ExtArgs>
+          args: Prisma.GemTransactionUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.GemUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>[]
+          args: Prisma.GemTransactionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>[]
         }
         upsert: {
-          args: Prisma.GemUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemPayload>
+          args: Prisma.GemTransactionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GemTransactionPayload>
         }
         aggregate: {
-          args: Prisma.GemAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateGem>
+          args: Prisma.GemTransactionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGemTransaction>
         }
         groupBy: {
-          args: Prisma.GemGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GemGroupByOutputType>[]
+          args: Prisma.GemTransactionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GemTransactionGroupByOutputType>[]
         }
         count: {
-          args: Prisma.GemCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GemCountAggregateOutputType> | number
+          args: Prisma.GemTransactionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GemTransactionCountAggregateOutputType> | number
         }
       }
     }
@@ -600,6 +600,7 @@ export const UserScalarFieldEnum = {
   avatar: 'avatar',
   role: 'role',
   status: 'status',
+  gems: 'gems',
   lastLoginAt: 'lastLoginAt',
   deletedAt: 'deletedAt',
   deletedBy: 'deletedBy',
@@ -610,15 +611,15 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const GemScalarFieldEnum = {
+export const GemTransactionScalarFieldEnum = {
   id: 'id',
   amount: 'amount',
+  reason: 'reason',
   userId: 'userId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  createdAt: 'createdAt'
 } as const
 
-export type GemScalarFieldEnum = (typeof GemScalarFieldEnum)[keyof typeof GemScalarFieldEnum]
+export type GemTransactionScalarFieldEnum = (typeof GemTransactionScalarFieldEnum)[keyof typeof GemTransactionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -694,20 +695,6 @@ export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -718,6 +705,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -830,7 +831,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
-  gem?: Prisma.GemOmit
+  gemTransaction?: Prisma.GemTransactionOmit
 }
 
 /* Types for Logging */

@@ -9,5 +9,5 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
-export type * from './models/Gem'
+export type * from './models/GemTransaction'
 export type * from './commonInputTypes'

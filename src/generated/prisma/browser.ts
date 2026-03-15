@@ -23,7 +23,7 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
- * Model Gem
+ * Model GemTransaction
  * 
  */
-export type Gem = Prisma.GemModel
+export type GemTransaction = Prisma.GemTransactionModel

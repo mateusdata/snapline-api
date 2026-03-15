@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  gems: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  gems: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -32,6 +42,7 @@ export type UserMinAggregateOutputType = {
   avatar: string | null
   role: $Enums.Role | null
   status: $Enums.UserStatus | null
+  gems: number | null
   lastLoginAt: Date | null
   deletedAt: Date | null
   deletedBy: string | null
@@ -47,6 +58,7 @@ export type UserMaxAggregateOutputType = {
   avatar: string | null
   role: $Enums.Role | null
   status: $Enums.UserStatus | null
+  gems: number | null
   lastLoginAt: Date | null
   deletedAt: Date | null
   deletedBy: string | null
@@ -62,6 +74,7 @@ export type UserCountAggregateOutputType = {
   avatar: number
   role: number
   status: number
+  gems: number
   lastLoginAt: number
   deletedAt: number
   deletedBy: number
@@ -71,6 +84,14 @@ export type UserCountAggregateOutputType = {
 }
 
 
+export type UserAvgAggregateInputType = {
+  gems?: true
+}
+
+export type UserSumAggregateInputType = {
+  gems?: true
+}
+
 export type UserMinAggregateInputType = {
   id?: true
   name?: true
@@ -79,6 +100,7 @@ export type UserMinAggregateInputType = {
   avatar?: true
   role?: true
   status?: true
+  gems?: true
   lastLoginAt?: true
   deletedAt?: true
   deletedBy?: true
@@ -94,6 +116,7 @@ export type UserMaxAggregateInputType = {
   avatar?: true
   role?: true
   status?: true
+  gems?: true
   lastLoginAt?: true
   deletedAt?: true
   deletedBy?: true
@@ -109,6 +132,7 @@ export type UserCountAggregateInputType = {
   avatar?: true
   role?: true
   status?: true
+  gems?: true
   lastLoginAt?: true
   deletedAt?: true
   deletedBy?: true
@@ -155,6 +179,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -185,6 +221,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -197,12 +235,15 @@ export type UserGroupByOutputType = {
   avatar: string | null
   role: $Enums.Role
   status: $Enums.UserStatus
+  gems: number
   lastLoginAt: Date | null
   deletedAt: Date | null
   deletedBy: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -233,12 +274,13 @@ export type UserWhereInput = {
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  gems?: Prisma.IntFilter<"User"> | number
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  gemas?: Prisma.GemListRelationFilter
+  transactions?: Prisma.GemTransactionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -249,12 +291,13 @@ export type UserOrderByWithRelationInput = {
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  gems?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  gemas?: Prisma.GemOrderByRelationAggregateInput
+  transactions?: Prisma.GemTransactionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -268,12 +311,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  gems?: Prisma.IntFilter<"User"> | number
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  gemas?: Prisma.GemListRelationFilter
+  transactions?: Prisma.GemTransactionListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -284,14 +328,17 @@ export type UserOrderByWithAggregationInput = {
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  gems?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -305,6 +352,7 @@ export type UserScalarWhereWithAggregatesInput = {
   avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+  gems?: Prisma.IntWithAggregatesFilter<"User"> | number
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   deletedBy?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -320,12 +368,13 @@ export type UserCreateInput = {
   avatar?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
+  gems?: number
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  gemas?: Prisma.GemCreateNestedManyWithoutUserInput
+  transactions?: Prisma.GemTransactionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -336,12 +385,13 @@ export type UserUncheckedCreateInput = {
   avatar?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
+  gems?: number
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  gemas?: Prisma.GemUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.GemTransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -352,12 +402,13 @@ export type UserUpdateInput = {
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  gems?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  gemas?: Prisma.GemUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.GemTransactionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -368,12 +419,13 @@ export type UserUncheckedUpdateInput = {
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  gems?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  gemas?: Prisma.GemUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.GemTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -384,6 +436,7 @@ export type UserCreateManyInput = {
   avatar?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
+  gems?: number
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -399,6 +452,7 @@ export type UserUpdateManyMutationInput = {
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  gems?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -414,6 +468,7 @@ export type UserUncheckedUpdateManyInput = {
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  gems?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -429,11 +484,16 @@ export type UserCountOrderByAggregateInput = {
   avatar?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  gems?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  gems?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -444,6 +504,7 @@ export type UserMaxOrderByAggregateInput = {
   avatar?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  gems?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
@@ -459,11 +520,16 @@ export type UserMinOrderByAggregateInput = {
   avatar?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  gems?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  gems?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -487,6 +553,14 @@ export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus
 }
 
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
@@ -495,21 +569,21 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type UserCreateNestedOneWithoutGemasInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutGemasInput, Prisma.UserUncheckedCreateWithoutGemasInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGemasInput
+export type UserCreateNestedOneWithoutTransactionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransactionsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutGemasNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutGemasInput, Prisma.UserUncheckedCreateWithoutGemasInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGemasInput
-  upsert?: Prisma.UserUpsertWithoutGemasInput
+export type UserUpdateOneRequiredWithoutTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransactionsInput
+  upsert?: Prisma.UserUpsertWithoutTransactionsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGemasInput, Prisma.UserUpdateWithoutGemasInput>, Prisma.UserUncheckedUpdateWithoutGemasInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTransactionsInput, Prisma.UserUpdateWithoutTransactionsInput>, Prisma.UserUncheckedUpdateWithoutTransactionsInput>
 }
 
-export type UserCreateWithoutGemasInput = {
+export type UserCreateWithoutTransactionsInput = {
   id?: string
   name: string
   email: string
@@ -517,6 +591,7 @@ export type UserCreateWithoutGemasInput = {
   avatar?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
+  gems?: number
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -524,7 +599,7 @@ export type UserCreateWithoutGemasInput = {
   updatedAt?: Date | string
 }
 
-export type UserUncheckedCreateWithoutGemasInput = {
+export type UserUncheckedCreateWithoutTransactionsInput = {
   id?: string
   name: string
   email: string
@@ -532,6 +607,7 @@ export type UserUncheckedCreateWithoutGemasInput = {
   avatar?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
+  gems?: number
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -539,23 +615,23 @@ export type UserUncheckedCreateWithoutGemasInput = {
   updatedAt?: Date | string
 }
 
-export type UserCreateOrConnectWithoutGemasInput = {
+export type UserCreateOrConnectWithoutTransactionsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutGemasInput, Prisma.UserUncheckedCreateWithoutGemasInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
 }
 
-export type UserUpsertWithoutGemasInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutGemasInput, Prisma.UserUncheckedUpdateWithoutGemasInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutGemasInput, Prisma.UserUncheckedCreateWithoutGemasInput>
+export type UserUpsertWithoutTransactionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTransactionsInput, Prisma.UserUncheckedUpdateWithoutTransactionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutGemasInput = {
+export type UserUpdateToOneWithWhereWithoutTransactionsInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutGemasInput, Prisma.UserUncheckedUpdateWithoutGemasInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTransactionsInput, Prisma.UserUncheckedUpdateWithoutTransactionsInput>
 }
 
-export type UserUpdateWithoutGemasInput = {
+export type UserUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -563,6 +639,7 @@ export type UserUpdateWithoutGemasInput = {
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  gems?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -570,7 +647,7 @@ export type UserUpdateWithoutGemasInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type UserUncheckedUpdateWithoutGemasInput = {
+export type UserUncheckedUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -578,6 +655,7 @@ export type UserUncheckedUpdateWithoutGemasInput = {
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  gems?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -591,11 +669,11 @@ export type UserUncheckedUpdateWithoutGemasInput = {
  */
 
 export type UserCountOutputType = {
-  gemas: number
+  transactions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  gemas?: boolean | UserCountOutputTypeCountGemasArgs
+  transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
 }
 
 /**
@@ -611,8 +689,8 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountGemasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.GemWhereInput
+export type UserCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GemTransactionWhereInput
 }
 
 
@@ -624,12 +702,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   avatar?: boolean
   role?: boolean
   status?: boolean
+  gems?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  gemas?: boolean | Prisma.User$gemasArgs<ExtArgs>
+  transactions?: boolean | Prisma.User$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -641,6 +720,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatar?: boolean
   role?: boolean
   status?: boolean
+  gems?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
@@ -656,6 +736,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatar?: boolean
   role?: boolean
   status?: boolean
+  gems?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
@@ -671,6 +752,7 @@ export type UserSelectScalar = {
   avatar?: boolean
   role?: boolean
   status?: boolean
+  gems?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
@@ -678,9 +760,9 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "avatar" | "role" | "status" | "lastLoginAt" | "deletedAt" | "deletedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "avatar" | "role" | "status" | "gems" | "lastLoginAt" | "deletedAt" | "deletedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  gemas?: boolean | Prisma.User$gemasArgs<ExtArgs>
+  transactions?: boolean | Prisma.User$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -689,7 +771,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    gemas: Prisma.$GemPayload<ExtArgs>[]
+    transactions: Prisma.$GemTransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -699,6 +781,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     avatar: string | null
     role: $Enums.Role
     status: $Enums.UserStatus
+    gems: number
     lastLoginAt: Date | null
     deletedAt: Date | null
     deletedBy: string | null
@@ -1098,7 +1181,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  gemas<T extends Prisma.User$gemasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$gemasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transactions<T extends Prisma.User$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GemTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1135,6 +1218,7 @@ export interface UserFieldRefs {
   readonly avatar: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
+  readonly gems: Prisma.FieldRef<"User", 'Int'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly deletedBy: Prisma.FieldRef<"User", 'String'>
@@ -1533,27 +1617,27 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.gemas
+ * User.transactions
  */
-export type User$gemasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Gem
+   * Select specific fields to fetch from the GemTransaction
    */
-  select?: Prisma.GemSelect<ExtArgs> | null
+  select?: Prisma.GemTransactionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Gem
+   * Omit specific fields from the GemTransaction
    */
-  omit?: Prisma.GemOmit<ExtArgs> | null
+  omit?: Prisma.GemTransactionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.GemInclude<ExtArgs> | null
-  where?: Prisma.GemWhereInput
-  orderBy?: Prisma.GemOrderByWithRelationInput | Prisma.GemOrderByWithRelationInput[]
-  cursor?: Prisma.GemWhereUniqueInput
+  include?: Prisma.GemTransactionInclude<ExtArgs> | null
+  where?: Prisma.GemTransactionWhereInput
+  orderBy?: Prisma.GemTransactionOrderByWithRelationInput | Prisma.GemTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.GemTransactionWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.GemScalarFieldEnum | Prisma.GemScalarFieldEnum[]
+  distinct?: Prisma.GemTransactionScalarFieldEnum | Prisma.GemTransactionScalarFieldEnum[]
 }
 
 /**
