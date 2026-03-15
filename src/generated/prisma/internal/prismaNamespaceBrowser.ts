@@ -96,7 +96,9 @@ export const GemTransactionScalarFieldEnum = {
   amount: 'amount',
   reason: 'reason',
   userId: 'userId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy'
 } as const
 
 export type GemTransactionScalarFieldEnum = (typeof GemTransactionScalarFieldEnum)[keyof typeof GemTransactionScalarFieldEnum]

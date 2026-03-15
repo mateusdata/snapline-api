@@ -40,6 +40,8 @@ export type GemTransactionMinAggregateOutputType = {
   reason: string | null
   userId: string | null
   createdAt: Date | null
+  deletedAt: Date | null
+  deletedBy: string | null
 }
 
 export type GemTransactionMaxAggregateOutputType = {
@@ -48,6 +50,8 @@ export type GemTransactionMaxAggregateOutputType = {
   reason: string | null
   userId: string | null
   createdAt: Date | null
+  deletedAt: Date | null
+  deletedBy: string | null
 }
 
 export type GemTransactionCountAggregateOutputType = {
@@ -56,6 +60,8 @@ export type GemTransactionCountAggregateOutputType = {
   reason: number
   userId: number
   createdAt: number
+  deletedAt: number
+  deletedBy: number
   _all: number
 }
 
@@ -74,6 +80,8 @@ export type GemTransactionMinAggregateInputType = {
   reason?: true
   userId?: true
   createdAt?: true
+  deletedAt?: true
+  deletedBy?: true
 }
 
 export type GemTransactionMaxAggregateInputType = {
@@ -82,6 +90,8 @@ export type GemTransactionMaxAggregateInputType = {
   reason?: true
   userId?: true
   createdAt?: true
+  deletedAt?: true
+  deletedBy?: true
 }
 
 export type GemTransactionCountAggregateInputType = {
@@ -90,6 +100,8 @@ export type GemTransactionCountAggregateInputType = {
   reason?: true
   userId?: true
   createdAt?: true
+  deletedAt?: true
+  deletedBy?: true
   _all?: true
 }
 
@@ -185,6 +197,8 @@ export type GemTransactionGroupByOutputType = {
   reason: string
   userId: string
   createdAt: Date
+  deletedAt: Date | null
+  deletedBy: string | null
   _count: GemTransactionCountAggregateOutputType | null
   _avg: GemTransactionAvgAggregateOutputType | null
   _sum: GemTransactionSumAggregateOutputType | null
@@ -216,6 +230,8 @@ export type GemTransactionWhereInput = {
   reason?: Prisma.StringFilter<"GemTransaction"> | string
   userId?: Prisma.StringFilter<"GemTransaction"> | string
   createdAt?: Prisma.DateTimeFilter<"GemTransaction"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"GemTransaction"> | Date | string | null
+  deletedBy?: Prisma.StringNullableFilter<"GemTransaction"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -225,6 +241,8 @@ export type GemTransactionOrderByWithRelationInput = {
   reason?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -237,6 +255,8 @@ export type GemTransactionWhereUniqueInput = Prisma.AtLeast<{
   reason?: Prisma.StringFilter<"GemTransaction"> | string
   userId?: Prisma.StringFilter<"GemTransaction"> | string
   createdAt?: Prisma.DateTimeFilter<"GemTransaction"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"GemTransaction"> | Date | string | null
+  deletedBy?: Prisma.StringNullableFilter<"GemTransaction"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
@@ -246,6 +266,8 @@ export type GemTransactionOrderByWithAggregationInput = {
   reason?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.GemTransactionCountOrderByAggregateInput
   _avg?: Prisma.GemTransactionAvgOrderByAggregateInput
   _max?: Prisma.GemTransactionMaxOrderByAggregateInput
@@ -262,6 +284,8 @@ export type GemTransactionScalarWhereWithAggregatesInput = {
   reason?: Prisma.StringWithAggregatesFilter<"GemTransaction"> | string
   userId?: Prisma.StringWithAggregatesFilter<"GemTransaction"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"GemTransaction"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"GemTransaction"> | Date | string | null
+  deletedBy?: Prisma.StringNullableWithAggregatesFilter<"GemTransaction"> | string | null
 }
 
 export type GemTransactionCreateInput = {
@@ -269,6 +293,8 @@ export type GemTransactionCreateInput = {
   amount: number
   reason: string
   createdAt?: Date | string
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutGemTransactionInput
 }
 
@@ -278,6 +304,8 @@ export type GemTransactionUncheckedCreateInput = {
   reason: string
   userId: string
   createdAt?: Date | string
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
 }
 
 export type GemTransactionUpdateInput = {
@@ -285,6 +313,8 @@ export type GemTransactionUpdateInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutGemTransactionNestedInput
 }
 
@@ -294,6 +324,8 @@ export type GemTransactionUncheckedUpdateInput = {
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type GemTransactionCreateManyInput = {
@@ -302,6 +334,8 @@ export type GemTransactionCreateManyInput = {
   reason: string
   userId: string
   createdAt?: Date | string
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
 }
 
 export type GemTransactionUpdateManyMutationInput = {
@@ -309,6 +343,8 @@ export type GemTransactionUpdateManyMutationInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type GemTransactionUncheckedUpdateManyInput = {
@@ -317,6 +353,8 @@ export type GemTransactionUncheckedUpdateManyInput = {
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type GemTransactionListRelationFilter = {
@@ -335,6 +373,8 @@ export type GemTransactionCountOrderByAggregateInput = {
   reason?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletedBy?: Prisma.SortOrder
 }
 
 export type GemTransactionAvgOrderByAggregateInput = {
@@ -347,6 +387,8 @@ export type GemTransactionMaxOrderByAggregateInput = {
   reason?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletedBy?: Prisma.SortOrder
 }
 
 export type GemTransactionMinOrderByAggregateInput = {
@@ -355,6 +397,8 @@ export type GemTransactionMinOrderByAggregateInput = {
   reason?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletedBy?: Prisma.SortOrder
 }
 
 export type GemTransactionSumOrderByAggregateInput = {
@@ -408,6 +452,8 @@ export type GemTransactionCreateWithoutUserInput = {
   amount: number
   reason: string
   createdAt?: Date | string
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
 }
 
 export type GemTransactionUncheckedCreateWithoutUserInput = {
@@ -415,6 +461,8 @@ export type GemTransactionUncheckedCreateWithoutUserInput = {
   amount: number
   reason: string
   createdAt?: Date | string
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
 }
 
 export type GemTransactionCreateOrConnectWithoutUserInput = {
@@ -452,6 +500,8 @@ export type GemTransactionScalarWhereInput = {
   reason?: Prisma.StringFilter<"GemTransaction"> | string
   userId?: Prisma.StringFilter<"GemTransaction"> | string
   createdAt?: Prisma.DateTimeFilter<"GemTransaction"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"GemTransaction"> | Date | string | null
+  deletedBy?: Prisma.StringNullableFilter<"GemTransaction"> | string | null
 }
 
 export type GemTransactionCreateManyUserInput = {
@@ -459,6 +509,8 @@ export type GemTransactionCreateManyUserInput = {
   amount: number
   reason: string
   createdAt?: Date | string
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
 }
 
 export type GemTransactionUpdateWithoutUserInput = {
@@ -466,6 +518,8 @@ export type GemTransactionUpdateWithoutUserInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type GemTransactionUncheckedUpdateWithoutUserInput = {
@@ -473,6 +527,8 @@ export type GemTransactionUncheckedUpdateWithoutUserInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type GemTransactionUncheckedUpdateManyWithoutUserInput = {
@@ -480,6 +536,8 @@ export type GemTransactionUncheckedUpdateManyWithoutUserInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -490,6 +548,8 @@ export type GemTransactionSelect<ExtArgs extends runtime.Types.Extensions.Intern
   reason?: boolean
   userId?: boolean
   createdAt?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["gemTransaction"]>
 
@@ -499,6 +559,8 @@ export type GemTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   reason?: boolean
   userId?: boolean
   createdAt?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["gemTransaction"]>
 
@@ -508,6 +570,8 @@ export type GemTransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   reason?: boolean
   userId?: boolean
   createdAt?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["gemTransaction"]>
 
@@ -517,9 +581,11 @@ export type GemTransactionSelectScalar = {
   reason?: boolean
   userId?: boolean
   createdAt?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
 }
 
-export type GemTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "reason" | "userId" | "createdAt", ExtArgs["result"]["gemTransaction"]>
+export type GemTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "reason" | "userId" | "createdAt" | "deletedAt" | "deletedBy", ExtArgs["result"]["gemTransaction"]>
 export type GemTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -541,6 +607,8 @@ export type $GemTransactionPayload<ExtArgs extends runtime.Types.Extensions.Inte
     reason: string
     userId: string
     createdAt: Date
+    deletedAt: Date | null
+    deletedBy: string | null
   }, ExtArgs["result"]["gemTransaction"]>
   composites: {}
 }
@@ -970,6 +1038,8 @@ export interface GemTransactionFieldRefs {
   readonly reason: Prisma.FieldRef<"GemTransaction", 'String'>
   readonly userId: Prisma.FieldRef<"GemTransaction", 'String'>
   readonly createdAt: Prisma.FieldRef<"GemTransaction", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"GemTransaction", 'DateTime'>
+  readonly deletedBy: Prisma.FieldRef<"GemTransaction", 'String'>
 }
     
 

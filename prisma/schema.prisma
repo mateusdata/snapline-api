@@ -31,7 +31,7 @@ model User {
   avatar         String?
   role           Role             @default(USER)
   status         UserStatus       @default(ACTIVE)
-  gems           Int              @default(500)
+  gems           Int              @default(200)
   lastLoginAt    DateTime?
   gemTransaction GemTransaction[]
   devices        Device[]
@@ -50,7 +50,8 @@ model GemTransaction {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
-
+  deletedAt      DateTime?
+  deletedBy      String?
   @@map("gem_transactions")
 }
 
