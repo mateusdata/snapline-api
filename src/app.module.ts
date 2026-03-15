@@ -17,7 +17,7 @@ import { GameModule } from './modules/game/game.module';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '100  d' },
     }),
     UsersModule,
     AuthModule,
