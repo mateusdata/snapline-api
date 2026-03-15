@@ -281,7 +281,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
    * notifySelf = true → saída voluntária, envia 'leftRoom' de volta ao cliente.
    * notifySelf = false → desconexão abrupta, socket já sumiu.
    */
-  private doLeaveRoom(client: Socket, notifySelf: boolean) {
+  private async doLeaveRoom(client: Socket, notifySelf: boolean) {
     const code = this.socketRoom.get(client.id)
     if (!code) return
 
@@ -296,11 +296,31 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const hadTwoPlayers = room.players.length === 2
 
     if (isCreator || hadTwoPlayers) {
-      // notifica quem ficou (exceto quem saiu)
+      // ── abandono com partida em andamento → transfere gemas ──────────
       if (hadTwoPlayers) {
-        this.server.to(code).except(client.id).emit('opponentLeft')
+        const leaver  = room.players.find(p => p.socketId === client.id)
+        const stayer  = room.players.find(p => p.socketId !== client.id)
+
+        if (leaver && stayer) {
+          // aplica resultado: quem saiu = perdedor, quem ficou = vencedor
+          await this.gameService.applyResult(
+            stayer.userId,
+            leaver.userId,
+            room.gemsAtStake,
+          )
+
+          const stayerGems = await this.gameService.getGems(stayer.userId)
+
+          // avisa quem ficou com gems atualizadas
+          this.server.to(stayer.socketId).emit('opponentAbandoned', {
+            gems: stayerGems,
+          })
+        } else {
+          // sala criada mas sem partida iniciada — só avisa
+          this.server.to(code).except(client.id).emit('opponentLeft')
+        }
       }
-      // confirma saída para o próprio cliente (só em saída voluntária)
+
       if (notifySelf) client.emit('leftRoom')
       this.cleanRoom(room)
     } else {
