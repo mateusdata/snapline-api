@@ -25,6 +25,7 @@ interface RoomState {
   gemsAtStake: number
   creatorId  : string
   isPrivate  : boolean   // true = sala privada (só entra com código)
+  gameOver   : boolean   // true = partida encerrada, saída não é abandono
 }
 
 // ── constantes ─────────────────────────────────────────────────
@@ -133,6 +134,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         gemsAtStake: 100,
         creatorId  : client.id,
         isPrivate  : false,
+        gameOver   : false,
       }
       this.rooms.set(code, room)
       client.join(code)
@@ -168,6 +170,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       gemsAtStake: 100,
       creatorId  : client.id,
       isPrivate  : true,
+      gameOver   : false,
     }
     this.rooms.set(code, room)
     client.join(code)
@@ -257,8 +260,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
     }
 
-    room.pieces = INITIAL_PIECES.map(p => ({ ...p }))
-    room.turn   = Math.random() < 0.5 ? 'p1' : 'p2'
+    room.pieces   = INITIAL_PIECES.map(p => ({ ...p }))
+    room.turn     = Math.random() < 0.5 ? 'p1' : 'p2'
+    room.gameOver = false
     this.server.to(roomCode).emit('gameState', this.roomPayload(room))
     this.server.to(roomCode).emit('gameReset', { firstTurn: room.turn })
   }
@@ -299,28 +303,28 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const hadTwoPlayers = room.players.length === 2
 
     if (isCreator || hadTwoPlayers) {
-      // ── abandono com partida em andamento → transfere gemas ──────────
       if (hadTwoPlayers) {
-        const leaver  = room.players.find(p => p.socketId === client.id)
-        const stayer  = room.players.find(p => p.socketId !== client.id)
-
-        if (leaver && stayer) {
-          // aplica resultado: quem saiu = perdedor, quem ficou = vencedor
-          await this.gameService.applyResult(
-            stayer.userId,
-            leaver.userId,
-            room.gemsAtStake,
-          )
-
-          const stayerGems = await this.gameService.getGems(stayer.userId)
-
-          // avisa quem ficou com gems atualizadas
-          this.server.to(stayer.socketId).emit('opponentAbandoned', {
-            gems: stayerGems,
-          })
-        } else {
-          // sala criada mas sem partida iniciada — só avisa
+        if (room.gameOver) {
+          // ── partida já encerrada → saída normal, sem transferir gemas ──
           this.server.to(code).except(client.id).emit('opponentLeft')
+        } else {
+          // ── abandono com partida em andamento → transfere gemas ────────
+          const leaver = room.players.find(p => p.socketId === client.id)
+          const stayer = room.players.find(p => p.socketId !== client.id)
+
+          if (leaver && stayer) {
+            await this.gameService.applyResult(
+              stayer.userId,
+              leaver.userId,
+              room.gemsAtStake,
+            )
+            const stayerGems = await this.gameService.getGems(stayer.userId)
+            this.server.to(stayer.socketId).emit('opponentAbandoned', {
+              gems: stayerGems,
+            })
+          } else {
+            this.server.to(code).except(client.id).emit('opponentLeft')
+          }
         }
       }
 
@@ -355,6 +359,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.gameService.getGems(wp.userId),
       this.gameService.getGems(lp.userId),
     ])
+
+    // marca partida como encerrada — saída agora não é abandono
+    room.gameOver = true
 
     this.server.to(room.code).emit('roundEnd', {
       winner,
