@@ -10,4 +10,5 @@
  */
 export type * from './models/User'
 export type * from './models/GemTransaction'
+export type * from './models/Device'
 export type * from './commonInputTypes'

@@ -18,33 +18,50 @@ enum UserStatus {
   SUSPENDED
 }
 
+enum DevicePlatform {
+  ANDROID
+  IOS
+}
+
 model User {
-  id           String           @id @default(uuid(7))
-  name         String
-  email        String           @unique
-  password     String?
-  avatar       String?
-  role         Role             @default(USER)
-  status       UserStatus       @default(ACTIVE)
-  gems         Int              @default(500)
-  lastLoginAt  DateTime?
-  transactions GemTransaction[]
-  deletedAt    DateTime?
-  deletedBy    String?
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+  id             String           @id @default(uuid(7))
+  name           String
+  email          String           @unique
+  password       String?
+  avatar         String?
+  role           Role             @default(USER)
+  status         UserStatus       @default(ACTIVE)
+  gems           Int              @default(500)
+  lastLoginAt    DateTime?
+  gemTransaction GemTransaction[]
+  devices        Device[]
+  deletedAt      DateTime?
+  deletedBy      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 
   @@map("users")
 }
 
-// histórico de transações (opcional mas útil)
 model GemTransaction {
   id        String   @id @default(uuid(7))
-  amount    Int     
-  reason    String  
+  amount    Int
+  reason    String
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 
   @@map("gem_transactions")
+}
+
+model Device {
+  id        String         @id @default(uuid(7))
+  token     String         @unique // expo push token
+  platform  DevicePlatform
+  userId    String
+  user      User           @relation(fields: [userId], references: [id])
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@map("devices")
 }

@@ -24,3 +24,11 @@ export const UserStatus = {
 } as const
 
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+
+export const DevicePlatform = {
+  ANDROID: 'ANDROID',
+  IOS: 'IOS'
+} as const
+
+export type DevicePlatform = (typeof DevicePlatform)[keyof typeof DevicePlatform]

@@ -6,17 +6,17 @@ import { CreateAuthGoogleDto } from './dto/create-auth-google.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Public()
   @Post('login')
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.create(createAuthDto);
   }
-   @Public()
-    @Post('google')
-    loginWithGoogle(@Body() createAuthGoogleDto: CreateAuthGoogleDto) {
-        return this.authService.loginWithGoogle(createAuthGoogleDto);
-    }
+  @Public()
+  @Post('google')
+  loginWithGoogle(@Body() createAuthGoogleDto: CreateAuthGoogleDto) {
+    return this.authService.loginWithGoogle(createAuthGoogleDto);
+  }
 
 }

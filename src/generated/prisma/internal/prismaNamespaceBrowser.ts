@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  GemTransaction: 'GemTransaction'
+  GemTransaction: 'GemTransaction',
+  Device: 'Device'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -99,6 +100,18 @@ export const GemTransactionScalarFieldEnum = {
 } as const
 
 export type GemTransactionScalarFieldEnum = (typeof GemTransactionScalarFieldEnum)[keyof typeof GemTransactionScalarFieldEnum]
+
+
+export const DeviceScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  platform: 'platform',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DeviceScalarFieldEnum = (typeof DeviceScalarFieldEnum)[keyof typeof DeviceScalarFieldEnum]
 
 
 export const SortOrder = {

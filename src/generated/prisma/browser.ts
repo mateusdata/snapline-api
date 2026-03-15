@@ -27,3 +27,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type GemTransaction = Prisma.GemTransactionModel
+/**
+ * Model Device
+ * 
+ */
+export type Device = Prisma.DeviceModel

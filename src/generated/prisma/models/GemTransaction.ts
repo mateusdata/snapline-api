@@ -269,7 +269,7 @@ export type GemTransactionCreateInput = {
   amount: number
   reason: string
   createdAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  user: Prisma.UserCreateNestedOneWithoutGemTransactionInput
 }
 
 export type GemTransactionUncheckedCreateInput = {
@@ -285,7 +285,7 @@ export type GemTransactionUpdateInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutGemTransactionNestedInput
 }
 
 export type GemTransactionUncheckedUpdateInput = {

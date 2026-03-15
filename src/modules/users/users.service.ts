@@ -59,7 +59,9 @@ async createGoogleUser(createUserGoogleDto: CreateUserGoogleDto) {
       console.log('Finding user with id:', id);
       const user = await this.prismaService.user.findUnique({
         where: { id },
+        include: {gemTransaction: true  },
       });
+      
       if (!user) {
         throw new NotFoundException('User not found');
       }
