@@ -164,40 +164,45 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.emitGameStart(room)
   }
 
-  // ── movimento ──────────────────────────────────────────────
-  @SubscribeMessage('move')
-  async handleMove(
-    @MessageBody() payload: { pieceId: string; to: number },
-    @ConnectedSocket() client: Socket,
-  ) {
-    const roomCode = this.socketRoom.get(client.id)
-    if (!roomCode) return
+  // movimentar peça ─────────────────────────────────────────────
+@SubscribeMessage('move')
+async handleMove(
+  @MessageBody() payload: { pieceId: string; to: number },
+  @ConnectedSocket() client: Socket,
+) {
+  const roomCode = this.socketRoom.get(client.id)
+  if (!roomCode) return
 
-    const room = this.rooms.get(roomCode)
-    if (!room) return
+  const room = this.rooms.get(roomCode)
+  if (!room) return
 
-    const myRole = room.players.find(p => p.socketId === client.id)?.role
-    if (!myRole || myRole !== room.turn) return
+  const myRole = room.players.find(p => p.socketId === client.id)?.role
+  if (!myRole || myRole !== room.turn) return
 
-    const piece = room.pieces.find(p => p.id === payload.pieceId)
-    if (!piece || piece.player !== myRole) return
+  const piece = room.pieces.find(p => p.id === payload.pieceId)
+  if (!piece || piece.player !== myRole) return
 
-    const occupied = room.pieces.map(p => p.position)
-    if (!CONNECTIONS[piece.position].includes(payload.to)) return
-    if (occupied.includes(payload.to)) return
+  const occupied = room.pieces.map(p => p.position)
+  if (!CONNECTIONS[piece.position].includes(payload.to)) return
+  if (occupied.includes(payload.to)) return
 
-    room.pieces = room.pieces.map(p =>
-      p.id === payload.pieceId ? { ...p, position: payload.to } : p,
-    )
+  room.pieces = room.pieces.map(p =>
+    p.id === payload.pieceId ? { ...p, position: payload.to } : p,
+  )
 
-    if (this.checkWin(room.pieces, myRole)) {
-      room.wins[myRole]++
-      await this.handleWin(room, myRole)
-    } else {
-      room.turn = myRole === 'p1' ? 'p2' : 'p1'
-      this.server.to(roomCode).emit('gameState', this.roomPayload(room))
-    }
+  if (this.checkWin(room.pieces, myRole)) {
+    room.wins[myRole]++
+    
+    this.server.to(roomCode).emit('gameState', this.roomPayload(room))
+
+    await new Promise(resolve => setTimeout(resolve, 600))
+
+    await this.handleWin(room, myRole)
+  } else {
+    room.turn = myRole === 'p1' ? 'p2' : 'p1'
+    this.server.to(roomCode).emit('gameState', this.roomPayload(room))
   }
+}
 
   // ── resetar partida (mantém wins e sala) ───────────────────
   @SubscribeMessage('resetGame')
