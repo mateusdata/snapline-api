@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './modules/auth/constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards/auth/auth-guard';
+import { WebsocketsModule } from './modules/websockets/websockets.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthGuard } from './common/guards/auth/auth-guard';
     UsersModule,
     AuthModule,
     PrismaModule,
+    WebsocketsModule,
   ],
   controllers: [AppController],
   providers: [
