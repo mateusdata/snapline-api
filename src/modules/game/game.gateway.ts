@@ -24,6 +24,7 @@ interface RoomState {
   wins       : { p1: number; p2: number }
   gemsAtStake: number
   creatorId  : string
+  isPrivate  : boolean   // true = sala privada (só entra com código)
 }
 
 // ── constantes ─────────────────────────────────────────────────
@@ -114,7 +115,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (!(await this.gameService.hasEnoughGems(userId)))
       return client.emit('error', 'Gemas insuficientes (mínimo 100)')
 
-    const waiting = [...this.rooms.values()].find(r => r.players.length === 1)
+    const waiting = [...this.rooms.values()].find(r => r.players.length === 1 && !r.isPrivate)
 
     if (waiting) {
       waiting.players.push({ socketId: client.id, userId, role: 'p2' })
@@ -131,6 +132,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         wins       : { p1: 0, p2: 0 },
         gemsAtStake: 100,
         creatorId  : client.id,
+        isPrivate  : false,
       }
       this.rooms.set(code, room)
       client.join(code)
@@ -165,6 +167,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       wins       : { p1: 0, p2: 0 },
       gemsAtStake: 100,
       creatorId  : client.id,
+      isPrivate  : true,
     }
     this.rooms.set(code, room)
     client.join(code)
