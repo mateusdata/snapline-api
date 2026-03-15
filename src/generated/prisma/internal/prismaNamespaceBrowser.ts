@@ -51,7 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  Gem: 'Gem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -76,13 +77,8 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   avatar: 'avatar',
-  phone: 'phone',
   role: 'role',
   status: 'status',
-  emailVerified: 'emailVerified',
-  emailVerifiedAt: 'emailVerifiedAt',
-  phoneVerified: 'phoneVerified',
-  phoneVerifiedAt: 'phoneVerifiedAt',
   lastLoginAt: 'lastLoginAt',
   deletedAt: 'deletedAt',
   deletedBy: 'deletedBy',
@@ -91,6 +87,17 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const GemScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GemScalarFieldEnum = (typeof GemScalarFieldEnum)[keyof typeof GemScalarFieldEnum]
 
 
 export const SortOrder = {

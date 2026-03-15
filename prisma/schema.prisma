@@ -22,21 +22,28 @@ model User {
   id              String     @id @default(uuid(7))
   name            String
   email           String     @unique
-  password        String
+  password        String?     
   avatar          String?
-  phone           String?    @unique
   role            Role   @default(USER)
   status          UserStatus @default(ACTIVE)
-  emailVerified   Boolean    @default(false)
-  emailVerifiedAt DateTime?
-  phoneVerified   Boolean    @default(false)
-
-  phoneVerifiedAt DateTime?
   lastLoginAt     DateTime?
+  gemas           Gem[]
+
   deletedAt       DateTime?
   deletedBy       String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-
   @@map("users")
+
 }
+
+model Gem {
+  id        String   @id @default(uuid(7))
+  amount    Int
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("gems")
+}
+
