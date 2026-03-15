@@ -193,8 +193,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return client.emit('error', 'Gemas insuficientes (mínimo 100)')
 
     const room = this.rooms.get(code.toUpperCase())
-    if (!room)                    return client.emit('error', 'Sala não encontrada')
-    if (room.players.length >= 2) return client.emit('error', 'Sala cheia')
+    if (!room)                    return client.emit('error', 'Código expirado')
+    if (room.players.length >= 2) return client.emit('error', 'Código expirado')
 
     room.players.push({ socketId: client.id, userId, role: 'p2' })
     client.join(code.toUpperCase())
@@ -338,6 +338,19 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       wins: room.wins,
       gems: { [wp.socketId]: wGems, [lp.socketId]: lGems },
     })
+
+    // se o perdedor ficou sem gemas, expulsa ambos da sala
+    if (lGems < 100) {
+      // pequeno delay para o cliente processar o roundEnd antes de receber o kick
+      await new Promise(r => setTimeout(r, 800))
+
+      // avisa o perdedor
+      this.server.to(lp.socketId).emit('kicked', 'Você ficou sem gemas e foi removido da sala.')
+      // avisa o vencedor
+      this.server.to(wp.socketId).emit('kicked', 'O oponente ficou sem gemas e saiu da sala.')
+
+      this.cleanRoom(room)
+    }
   }
 
   /**
