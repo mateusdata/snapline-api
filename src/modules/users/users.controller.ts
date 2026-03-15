@@ -37,11 +37,25 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+
+  @Patch('me')
+  updateMe(@User('sub') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(id, updateUserDto);
+  }
+
+  @Rules(Role.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
+
+  @Delete('me')
+  removeMe(@User('sub') id: string) {
+    return this.usersService.remove(id);
+  }
+
+  @Rules(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);

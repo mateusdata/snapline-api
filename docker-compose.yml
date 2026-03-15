@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17
-    container_name: snapeline-api-postgres
+    container_name: lapsid-core-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: snapeline-api-app
+    container_name: lapsid-core-app
     restart: unless-stopped
     ports:
       - "3000:3000"

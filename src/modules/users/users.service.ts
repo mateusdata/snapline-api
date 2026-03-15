@@ -44,6 +44,7 @@ export class UsersService {
   }
 
   async findOne(id: string) {
+   
     try {
       const user = await this.prisma.user.findUnique({
         where: { id },
@@ -77,8 +78,9 @@ export class UsersService {
 
   async remove(id: string) {
     try {
-      const deletedUser = await this.prisma.user.delete({
+      const deletedUser = await this.prisma.user.update({
         where: { id },
+        data: { deletedAt: new Date(), deletedBy: id },
       });
       return deletedUser;
     } catch (error) {

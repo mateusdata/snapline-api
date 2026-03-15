@@ -1,4 +1,4 @@
 
 export const jwtConstants = {
-  secret: 'mateussnaplinesecretkey',
+  secret: 'mateuslapsidsecretkey',
 };

@@ -11,7 +11,6 @@ export class WebsocketsGateway {
 
   @SubscribeMessage('createWebsocket')
   create(@MessageBody() createWebsocketDto: CreateWebsocketDto) {
-    console.log('Received createWebsocket message:', createWebsocketDto);
     return this.websocketsService.create(createWebsocketDto);
   }
 

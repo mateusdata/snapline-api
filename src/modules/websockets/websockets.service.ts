@@ -5,7 +5,7 @@ import { UpdateWebsocketDto } from './dto/update-websocket.dto';
 @Injectable()
 export class WebsocketsService {
   create(createWebsocketDto: CreateWebsocketDto) {
-    return 'This action adds a new websocket';
+    return `Você mandou pra mim isso : ${createWebsocketDto} pega de volta que eu nao quero oreia seca`;
   }
 
   findAll() {

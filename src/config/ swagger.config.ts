@@ -6,8 +6,8 @@ export function initializeSwagger(app: any) {
   app.setGlobalPrefix('api', { exclude: ['/'] });
 
   const config = new DocumentBuilder()
-    .setTitle('snapeline-api API')
-    .setDescription('snapeline-api')
+    .setTitle('Lapsid-core API')
+    .setDescription('Lapsid-core')
     .setVersion('1.0.0')
     .addTag('Users')
 
@@ -33,7 +33,7 @@ export function initializeSwagger(app: any) {
 
   const swaggerOptionsExternal = {
     customfavIcon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Typescript.svg/1200px-Typescript.svg.png',
-    customSiteTitle: 'snapline CORE - DOC',
+    customSiteTitle: 'LAPSID CORE - DOC',
     customCssUrl: [
 
     ],
