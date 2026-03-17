@@ -11,6 +11,7 @@ import { AuthGuard } from './common/guards/auth/auth-guard';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { WebsocketsModule } from './modules/websockets/websockets.module';
 import { GameModule } from './modules/game/game.module';
+import { CallModule } from './modules/call/call.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { GameModule } from './modules/game/game.module';
     WebsocketsModule,
     PrismaModule,
     GameModule,
+    CallModule,
   ],
   controllers: [AppController],
   providers: [
