@@ -29,6 +29,7 @@ export class UsersController {
 
   @Get('me')
   findMe(@User('sub') id: string) {
+    console.log('ID do usuário autenticado:', id);
     return this.usersService.findMe(id);
   }
 

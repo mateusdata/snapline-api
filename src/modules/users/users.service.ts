@@ -58,10 +58,8 @@ async findMe(id: string) {
   const user = await this.prismaService.user.findFirst({
     where: {
       id,
-      deletedAt: null,
     },
     include: {
-      gemTransaction: true,
       userAvatars: true,
     },
   });
