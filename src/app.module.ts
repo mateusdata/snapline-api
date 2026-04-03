@@ -13,6 +13,7 @@ import { WebsocketsModule } from './modules/websockets/websockets.module';
 import { GameModule } from './modules/game/game.module';
 import { CallModule } from './modules/call/call.module';
 import { TestModule } from './modules/test/test.module';
+import { AvatarsModule } from './modules/avatars/avatars.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TestModule } from './modules/test/test.module';
     GameModule,
     CallModule,
     TestModule,
+    AvatarsModule,
   ],
   controllers: [AppController],
   providers: [

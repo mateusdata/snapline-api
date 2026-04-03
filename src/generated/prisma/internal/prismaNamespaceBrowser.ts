@@ -52,6 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Subscription: 'Subscription',
+  Avatar: 'Avatar',
+  UserAvatar: 'UserAvatar',
   GemTransaction: 'GemTransaction',
   Device: 'Device'
 } as const
@@ -81,6 +84,7 @@ export const UserScalarFieldEnum = {
   role: 'role',
   status: 'status',
   gems: 'gems',
+  hasPlan: 'hasPlan',
   lastLoginAt: 'lastLoginAt',
   deletedAt: 'deletedAt',
   deletedBy: 'deletedBy',
@@ -89,6 +93,44 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  revenuecatId: 'revenuecatId',
+  entitlement: 'entitlement',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+export const AvatarScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  priceGems: 'priceGems',
+  isPremium: 'isPremium',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AvatarScalarFieldEnum = (typeof AvatarScalarFieldEnum)[keyof typeof AvatarScalarFieldEnum]
+
+
+export const UserAvatarScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  avatarId: 'avatarId',
+  isEquipped: 'isEquipped',
+  createdAt: 'createdAt'
+} as const
+
+export type UserAvatarScalarFieldEnum = (typeof UserAvatarScalarFieldEnum)[keyof typeof UserAvatarScalarFieldEnum]
 
 
 export const GemTransactionScalarFieldEnum = {

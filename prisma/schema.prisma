@@ -23,46 +23,114 @@ enum DevicePlatform {
   IOS
 }
 
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+  PAST_DUE
+}
+
 model User {
-  id             String           @id @default(uuid(7))
-  name           String
-  email          String           @unique
-  password       String?
-  avatar         String?
-  role           Role             @default(USER)
-  status         UserStatus       @default(ACTIVE)
-  gems           Int              @default(200)
-  lastLoginAt    DateTime?
+  id       String  @id @default(uuid(7))
+  name     String
+  email    String  @unique
+  password String?
+
+  avatar String?
+
+  role   Role       @default(USER)
+  status UserStatus @default(ACTIVE)
+  gems   Int        @default(200)
+
+  hasPlan Boolean @default(false)
+
+  lastLoginAt DateTime?
+
   gemTransaction GemTransaction[]
   devices        Device[]
-  deletedAt      DateTime?
-  deletedBy      String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+
+  subscription Subscription?
+
+  userAvatars UserAvatar[]
+
+  deletedAt DateTime?
+  deletedBy String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@map("users")
 }
 
-model GemTransaction {
-  id        String   @id @default(uuid(7))
-  amount    Int
-  reason    String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+model Subscription {
+  id     String @id @default(uuid(7))
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  revenuecatId String?
+  entitlement  String             @default("mobile-apps-core-firebase Pro")
+  status       SubscriptionStatus @default(ACTIVE)
+
+  expiresAt DateTime?
+
   createdAt DateTime @default(now())
-  deletedAt      DateTime?
-  deletedBy      String?
+  updatedAt DateTime @updatedAt
+
+  @@map("subscriptions")
+}
+
+model Avatar {
+  id        String  @id @default(uuid(7))
+  name      String?
+  imageUrl  String
+  priceGems Int     @default(0)
+  isPremium Boolean @default(false)
+
+  userAvatars UserAvatar[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("avatars")
+}
+
+model UserAvatar {
+  id       String @id @default(uuid(7))
+  userId   String
+  avatarId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar Avatar @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+
+  isEquipped Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, avatarId])
+  @@map("user_avatars")
+}
+
+model GemTransaction {
+  id     String @id @default(uuid(7))
+  amount Int
+  reason String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  deletedBy String?
+
   @@map("gem_transactions")
 }
 
 model Device {
-  id        String         @id @default(uuid(7))
-  token     String         @unique // expo push token
-  platform  DevicePlatform
-  userId    String
-  user      User           @relation(fields: [userId], references: [id])
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  id       String         @id @default(uuid(7))
+  token    String         @unique
+  platform DevicePlatform
+  userId   String
+  user     User           @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("devices")
 }
