@@ -5,7 +5,7 @@ import { PrismaService } from 'src/database/prisma/prisma.service';
 
 @Injectable()
 export class AvatarsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async create(createAvatarDto: CreateAvatarDto) {
     return this.prismaService.avatar.create({
@@ -15,12 +15,15 @@ export class AvatarsService {
 
   async findAll() {
     return this.prismaService.avatar.findMany({
-      orderBy: { priceGems: 'asc' }, 
+      where: { deletedAt: null },
+      orderBy: { priceGems: 'asc' },
     });
   }
 
   async findOne(id: string) {
-    const avatar = await this.prismaService.avatar.findUnique({ where: { id } });
+    const avatar = await this.prismaService.avatar.findFirst({
+      where: { id, deletedAt: null }
+    });
     if (!avatar) throw new NotFoundException('Avatar não encontrado');
     return avatar;
   }
@@ -39,8 +42,9 @@ export class AvatarsService {
 
   async remove(id: string) {
     try {
-      return await this.prismaService.avatar.delete({
+      return await this.prismaService.avatar.update({
         where: { id },
+        data: { deletedAt: new Date() },
       });
     } catch (error) {
       if (error.code === 'P2025') throw new NotFoundException('Avatar não encontrado');
@@ -48,9 +52,8 @@ export class AvatarsService {
     }
   }
 
-  // --- A LÓGICA DE COMPRA ATUALIZADA ---
   async buyAvatar(userId: string, avatarId: string) {
-    const avatar = await this.prismaService.avatar.findUnique({
+    const avatar = await this.prismaService.avatar.findFirst({
       where: { id: avatarId },
     });
 
@@ -58,10 +61,9 @@ export class AvatarsService {
       throw new NotFoundException('Avatar não encontrado na loja');
     }
 
-    // 1. Verifica na nova tabela se o usuário já comprou esse avatar
     const existingPurchase = await this.prismaService.userAvatar.findUnique({
       where: {
-        userId_avatarId: { userId, avatarId } // Usando a chave composta @@unique do Prisma
+        userId_avatarId: { userId, avatarId }
       }
     });
 
@@ -72,20 +74,18 @@ export class AvatarsService {
     const user = await this.prismaService.user.findUnique({ where: { id: userId } });
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
-    // 2. Valida o saldo de gemas
     if (!avatar.isPremium && avatar.priceGems > 0) {
       if (user.gems < avatar.priceGems) {
-        throw new BadRequestException('Gemas insuficientes para comprar este avatar');
+        throw new BadRequestException('Gemas insuficientes');
       }
     }
 
-    // 3. Executa a transação no banco
-    const result = await this.prismaService.$transaction(async (prisma) => {
+    return await this.prismaService.$transaction(async (prisma) => {
       let updatedGems = user.gems;
 
       if (!avatar.isPremium && avatar.priceGems > 0) {
         updatedGems -= avatar.priceGems;
-        
+
         await prisma.gemTransaction.create({
           data: {
             amount: -avatar.priceGems,
@@ -95,33 +95,26 @@ export class AvatarsService {
         });
       }
 
-      // Atualiza o saldo do usuário
-      const updatedUser = await prisma.user.update({
+      await prisma.user.update({
         where: { id: userId },
         data: { gems: updatedGems },
       });
 
-      // Salva a compra na NOVA TABELA explícita
       await prisma.userAvatar.create({
         data: {
           userId: userId,
           avatarId: avatarId,
-          isEquipped: false // Já entra como false por padrão
+          isEquipped: false
         }
       });
 
-      // Retorna o usuário atualizado com as relações pra bater com o Frontend
-      return prisma.user.findUnique({
+      return prisma.user.findFirst({
         where: { id: userId },
         include: {
           gemTransaction: true,
-          userAvatars: {
-            include: { avatar: true }
-          }
+          userAvatars: true, // Do jeito que você falou que funcionou!
         }
       });
     });
-
-    return result;
   }
 }
