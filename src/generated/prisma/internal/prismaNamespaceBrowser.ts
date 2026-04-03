@@ -115,6 +115,8 @@ export const AvatarScalarFieldEnum = {
   imageUrl: 'imageUrl',
   priceGems: 'priceGems',
   isPremium: 'isPremium',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -127,6 +129,8 @@ export const UserAvatarScalarFieldEnum = {
   userId: 'userId',
   avatarId: 'avatarId',
   isEquipped: 'isEquipped',
+  deletedAt: 'deletedAt',
+  deletedBy: 'deletedBy',
   createdAt: 'createdAt'
 } as const
 

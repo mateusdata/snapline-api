@@ -40,6 +40,8 @@ export type AvatarMinAggregateOutputType = {
   imageUrl: string | null
   priceGems: number | null
   isPremium: boolean | null
+  deletedAt: Date | null
+  deletedBy: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +52,8 @@ export type AvatarMaxAggregateOutputType = {
   imageUrl: string | null
   priceGems: number | null
   isPremium: boolean | null
+  deletedAt: Date | null
+  deletedBy: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +64,8 @@ export type AvatarCountAggregateOutputType = {
   imageUrl: number
   priceGems: number
   isPremium: number
+  deletedAt: number
+  deletedBy: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -80,6 +86,8 @@ export type AvatarMinAggregateInputType = {
   imageUrl?: true
   priceGems?: true
   isPremium?: true
+  deletedAt?: true
+  deletedBy?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -90,6 +98,8 @@ export type AvatarMaxAggregateInputType = {
   imageUrl?: true
   priceGems?: true
   isPremium?: true
+  deletedAt?: true
+  deletedBy?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +110,8 @@ export type AvatarCountAggregateInputType = {
   imageUrl?: true
   priceGems?: true
   isPremium?: true
+  deletedAt?: true
+  deletedBy?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -197,6 +209,8 @@ export type AvatarGroupByOutputType = {
   imageUrl: string
   priceGems: number
   isPremium: boolean
+  deletedAt: Date | null
+  deletedBy: string | null
   createdAt: Date
   updatedAt: Date
   _count: AvatarCountAggregateOutputType | null
@@ -230,6 +244,8 @@ export type AvatarWhereInput = {
   imageUrl?: Prisma.StringFilter<"Avatar"> | string
   priceGems?: Prisma.IntFilter<"Avatar"> | number
   isPremium?: Prisma.BoolFilter<"Avatar"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"Avatar"> | Date | string | null
+  deletedBy?: Prisma.StringNullableFilter<"Avatar"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string
   userAvatars?: Prisma.UserAvatarListRelationFilter
@@ -241,6 +257,8 @@ export type AvatarOrderByWithRelationInput = {
   imageUrl?: Prisma.SortOrder
   priceGems?: Prisma.SortOrder
   isPremium?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userAvatars?: Prisma.UserAvatarOrderByRelationAggregateInput
@@ -255,6 +273,8 @@ export type AvatarWhereUniqueInput = Prisma.AtLeast<{
   imageUrl?: Prisma.StringFilter<"Avatar"> | string
   priceGems?: Prisma.IntFilter<"Avatar"> | number
   isPremium?: Prisma.BoolFilter<"Avatar"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"Avatar"> | Date | string | null
+  deletedBy?: Prisma.StringNullableFilter<"Avatar"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string
   userAvatars?: Prisma.UserAvatarListRelationFilter
@@ -266,6 +286,8 @@ export type AvatarOrderByWithAggregationInput = {
   imageUrl?: Prisma.SortOrder
   priceGems?: Prisma.SortOrder
   isPremium?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AvatarCountOrderByAggregateInput
@@ -284,6 +306,8 @@ export type AvatarScalarWhereWithAggregatesInput = {
   imageUrl?: Prisma.StringWithAggregatesFilter<"Avatar"> | string
   priceGems?: Prisma.IntWithAggregatesFilter<"Avatar"> | number
   isPremium?: Prisma.BoolWithAggregatesFilter<"Avatar"> | boolean
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Avatar"> | Date | string | null
+  deletedBy?: Prisma.StringNullableWithAggregatesFilter<"Avatar"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Avatar"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Avatar"> | Date | string
 }
@@ -294,6 +318,8 @@ export type AvatarCreateInput = {
   imageUrl: string
   priceGems?: number
   isPremium?: boolean
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userAvatars?: Prisma.UserAvatarCreateNestedManyWithoutAvatarInput
@@ -305,6 +331,8 @@ export type AvatarUncheckedCreateInput = {
   imageUrl: string
   priceGems?: number
   isPremium?: boolean
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userAvatars?: Prisma.UserAvatarUncheckedCreateNestedManyWithoutAvatarInput
@@ -316,6 +344,8 @@ export type AvatarUpdateInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   priceGems?: Prisma.IntFieldUpdateOperationsInput | number
   isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userAvatars?: Prisma.UserAvatarUpdateManyWithoutAvatarNestedInput
@@ -327,6 +357,8 @@ export type AvatarUncheckedUpdateInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   priceGems?: Prisma.IntFieldUpdateOperationsInput | number
   isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userAvatars?: Prisma.UserAvatarUncheckedUpdateManyWithoutAvatarNestedInput
@@ -338,6 +370,8 @@ export type AvatarCreateManyInput = {
   imageUrl: string
   priceGems?: number
   isPremium?: boolean
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -348,6 +382,8 @@ export type AvatarUpdateManyMutationInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   priceGems?: Prisma.IntFieldUpdateOperationsInput | number
   isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -358,6 +394,8 @@ export type AvatarUncheckedUpdateManyInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   priceGems?: Prisma.IntFieldUpdateOperationsInput | number
   isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -368,6 +406,8 @@ export type AvatarCountOrderByAggregateInput = {
   imageUrl?: Prisma.SortOrder
   priceGems?: Prisma.SortOrder
   isPremium?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -382,6 +422,8 @@ export type AvatarMaxOrderByAggregateInput = {
   imageUrl?: Prisma.SortOrder
   priceGems?: Prisma.SortOrder
   isPremium?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -392,6 +434,8 @@ export type AvatarMinOrderByAggregateInput = {
   imageUrl?: Prisma.SortOrder
   priceGems?: Prisma.SortOrder
   isPremium?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -425,6 +469,8 @@ export type AvatarCreateWithoutUserAvatarsInput = {
   imageUrl: string
   priceGems?: number
   isPremium?: boolean
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -435,6 +481,8 @@ export type AvatarUncheckedCreateWithoutUserAvatarsInput = {
   imageUrl: string
   priceGems?: number
   isPremium?: boolean
+  deletedAt?: Date | string | null
+  deletedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -461,6 +509,8 @@ export type AvatarUpdateWithoutUserAvatarsInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   priceGems?: Prisma.IntFieldUpdateOperationsInput | number
   isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -471,6 +521,8 @@ export type AvatarUncheckedUpdateWithoutUserAvatarsInput = {
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   priceGems?: Prisma.IntFieldUpdateOperationsInput | number
   isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -512,6 +564,8 @@ export type AvatarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   imageUrl?: boolean
   priceGems?: boolean
   isPremium?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userAvatars?: boolean | Prisma.Avatar$userAvatarsArgs<ExtArgs>
@@ -524,6 +578,8 @@ export type AvatarSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   imageUrl?: boolean
   priceGems?: boolean
   isPremium?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["avatar"]>
@@ -534,6 +590,8 @@ export type AvatarSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   imageUrl?: boolean
   priceGems?: boolean
   isPremium?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["avatar"]>
@@ -544,11 +602,13 @@ export type AvatarSelectScalar = {
   imageUrl?: boolean
   priceGems?: boolean
   isPremium?: boolean
+  deletedAt?: boolean
+  deletedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AvatarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "imageUrl" | "priceGems" | "isPremium" | "createdAt" | "updatedAt", ExtArgs["result"]["avatar"]>
+export type AvatarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "imageUrl" | "priceGems" | "isPremium" | "deletedAt" | "deletedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["avatar"]>
 export type AvatarInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userAvatars?: boolean | Prisma.Avatar$userAvatarsArgs<ExtArgs>
   _count?: boolean | Prisma.AvatarCountOutputTypeDefaultArgs<ExtArgs>
@@ -567,6 +627,8 @@ export type $AvatarPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     imageUrl: string
     priceGems: number
     isPremium: boolean
+    deletedAt: Date | null
+    deletedBy: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["avatar"]>
@@ -998,6 +1060,8 @@ export interface AvatarFieldRefs {
   readonly imageUrl: Prisma.FieldRef<"Avatar", 'String'>
   readonly priceGems: Prisma.FieldRef<"Avatar", 'Int'>
   readonly isPremium: Prisma.FieldRef<"Avatar", 'Boolean'>
+  readonly deletedAt: Prisma.FieldRef<"Avatar", 'DateTime'>
+  readonly deletedBy: Prisma.FieldRef<"Avatar", 'String'>
   readonly createdAt: Prisma.FieldRef<"Avatar", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Avatar", 'DateTime'>
 }

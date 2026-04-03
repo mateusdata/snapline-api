@@ -25,7 +25,7 @@ export class UsersService {
   }
 
 
-  async createGoogleUser(createUserGoogleDto: CreateUserGoogleDto) {
+async createGoogleUser(createUserGoogleDto: CreateUserGoogleDto) {
 
     const exitingUser = await this.prismaService.user.findUnique({
       where: { email: createUserGoogleDto.email },
@@ -54,32 +54,27 @@ export class UsersService {
     return users;
   }
 
-  async findMe(id: string) {
-    try {
-      console.log('Finding user with id:', id);
-      const user = await this.prismaService.user.findUnique({
-        where: { id },
-        include: {
-          gemTransaction: true,
-          userAvatars: {
-            include: {
-              avatar: true
-            }
-          }
-        },
-      });
+async findMe(id: string) {
+  const user = await this.prismaService.user.findFirst({
+    where: {
+      id,
+      deletedAt: null,
+    },
+    include: {
+      gemTransaction: true,
+      userAvatars: true,
+    },
+  });
 
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-      return user;
-    } catch (error) {
-      throw error;
-    }
+  if (!user) {
+    throw new NotFoundException('User not found');
   }
 
-  async findOne(id: string) {
+  return user;
+}
 
+  async findOne(id: string) {
+   
     try {
       const user = await this.prismaService.user.findUnique({
         where: { id },
