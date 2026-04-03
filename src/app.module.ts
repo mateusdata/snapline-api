@@ -14,6 +14,7 @@ import { GameModule } from './modules/game/game.module';
 import { CallModule } from './modules/call/call.module';
 import { TestModule } from './modules/test/test.module';
 import { AvatarsModule } from './modules/avatars/avatars.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AvatarsModule } from './modules/avatars/avatars.module';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '100  d' },
     }),
+    CacheModule.register({isGlobal: true}),
     UsersModule,
     AuthModule,
     WebsocketsModule,

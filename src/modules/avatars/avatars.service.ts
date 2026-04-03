@@ -1,11 +1,15 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateAvatarDto } from './dto/create-avatar.dto';
 import { UpdateAvatarDto } from './dto/update-avatar.dto';
 import { PrismaService } from 'src/database/prisma/prisma.service';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
 export class AvatarsService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) { }
 
   async create(createAvatarDto: CreateAvatarDto) {
     return this.prismaService.avatar.create({
@@ -13,12 +17,27 @@ export class AvatarsService {
     });
   }
 
-  async findAll() {
-    return this.prismaService.avatar.findMany({
+async findAll() {
+  try {
+    const cached = await this.cacheManager.get('avatars');
+    if (cached) {
+      Logger.debug('Avatars retornados do cache');
+      return cached;
+    }
+
+    const avatars = await this.prismaService.avatar.findMany({
       where: { deletedAt: null },
       orderBy: { priceGems: 'asc' },
     });
+
+    await this.cacheManager.set('avatars', avatars, 3600000 ); // 1 hora em milissegundos
+    Logger.debug('Avatars retornados do banco e salvos no cache');
+    return avatars;
+  } catch (error) {
+    Logger.error('Erro ao buscar avatars', error);
+    throw error;
   }
+}
 
   async findOne(id: string) {
     const avatar = await this.prismaService.avatar.findFirst({
