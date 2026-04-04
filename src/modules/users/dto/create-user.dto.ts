@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { $Enums, User } from "src/generated/prisma/client";
 import { Transform } from "class-transformer";
-import { IsEmail, IsEmpty, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength, min, MinLength, minLength, ValidateIf } from 'class-validator';
+import { IsBoolean, IsEmail, IsEmpty, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength, min, MinLength, minLength, ValidateIf } from 'class-validator';
 
-export class CreateUserDto  {
+export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -29,6 +29,11 @@ export class CreateUserDto  {
   @IsEnum($Enums.Role)
   @IsOptional()
   role?: $Enums.Role;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  snapLineTutorialCompleted?: boolean;
 
 }
 

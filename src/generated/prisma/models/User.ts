@@ -44,6 +44,7 @@ export type UserMinAggregateOutputType = {
   status: $Enums.UserStatus | null
   gems: number | null
   hasPlan: boolean | null
+  snapLineTutorialCompleted: boolean | null
   lastLoginAt: Date | null
   deletedAt: Date | null
   deletedBy: string | null
@@ -61,6 +62,7 @@ export type UserMaxAggregateOutputType = {
   status: $Enums.UserStatus | null
   gems: number | null
   hasPlan: boolean | null
+  snapLineTutorialCompleted: boolean | null
   lastLoginAt: Date | null
   deletedAt: Date | null
   deletedBy: string | null
@@ -78,6 +80,7 @@ export type UserCountAggregateOutputType = {
   status: number
   gems: number
   hasPlan: number
+  snapLineTutorialCompleted: number
   lastLoginAt: number
   deletedAt: number
   deletedBy: number
@@ -105,6 +108,7 @@ export type UserMinAggregateInputType = {
   status?: true
   gems?: true
   hasPlan?: true
+  snapLineTutorialCompleted?: true
   lastLoginAt?: true
   deletedAt?: true
   deletedBy?: true
@@ -122,6 +126,7 @@ export type UserMaxAggregateInputType = {
   status?: true
   gems?: true
   hasPlan?: true
+  snapLineTutorialCompleted?: true
   lastLoginAt?: true
   deletedAt?: true
   deletedBy?: true
@@ -139,6 +144,7 @@ export type UserCountAggregateInputType = {
   status?: true
   gems?: true
   hasPlan?: true
+  snapLineTutorialCompleted?: true
   lastLoginAt?: true
   deletedAt?: true
   deletedBy?: true
@@ -243,6 +249,7 @@ export type UserGroupByOutputType = {
   status: $Enums.UserStatus
   gems: number
   hasPlan: boolean
+  snapLineTutorialCompleted: boolean
   lastLoginAt: Date | null
   deletedAt: Date | null
   deletedBy: string | null
@@ -283,6 +290,7 @@ export type UserWhereInput = {
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   gems?: Prisma.IntFilter<"User"> | number
   hasPlan?: Prisma.BoolFilter<"User"> | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"User"> | string | null
@@ -304,6 +312,7 @@ export type UserOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
   hasPlan?: Prisma.SortOrder
+  snapLineTutorialCompleted?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -328,6 +337,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   gems?: Prisma.IntFilter<"User"> | number
   hasPlan?: Prisma.BoolFilter<"User"> | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"User"> | string | null
@@ -349,6 +359,7 @@ export type UserOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
   hasPlan?: Prisma.SortOrder
+  snapLineTutorialCompleted?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -374,6 +385,7 @@ export type UserScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   gems?: Prisma.IntWithAggregatesFilter<"User"> | number
   hasPlan?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  snapLineTutorialCompleted?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   deletedBy?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -391,6 +403,7 @@ export type UserCreateInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -412,6 +425,7 @@ export type UserUncheckedCreateInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -433,6 +447,7 @@ export type UserUpdateInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -454,6 +469,7 @@ export type UserUncheckedUpdateInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -475,6 +491,7 @@ export type UserCreateManyInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -492,6 +509,7 @@ export type UserUpdateManyMutationInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -509,6 +527,7 @@ export type UserUncheckedUpdateManyInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -526,6 +545,7 @@ export type UserCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
   hasPlan?: Prisma.SortOrder
+  snapLineTutorialCompleted?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
@@ -547,6 +567,7 @@ export type UserMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
   hasPlan?: Prisma.SortOrder
+  snapLineTutorialCompleted?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
@@ -564,6 +585,7 @@ export type UserMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
   hasPlan?: Prisma.SortOrder
+  snapLineTutorialCompleted?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
@@ -682,6 +704,7 @@ export type UserCreateWithoutSubscriptionInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -702,6 +725,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -738,6 +762,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -758,6 +783,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -778,6 +804,7 @@ export type UserCreateWithoutUserAvatarsInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -798,6 +825,7 @@ export type UserUncheckedCreateWithoutUserAvatarsInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -834,6 +862,7 @@ export type UserUpdateWithoutUserAvatarsInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -854,6 +883,7 @@ export type UserUncheckedUpdateWithoutUserAvatarsInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -874,6 +904,7 @@ export type UserCreateWithoutGemTransactionInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -894,6 +925,7 @@ export type UserUncheckedCreateWithoutGemTransactionInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -930,6 +962,7 @@ export type UserUpdateWithoutGemTransactionInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -950,6 +983,7 @@ export type UserUncheckedUpdateWithoutGemTransactionInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -970,6 +1004,7 @@ export type UserCreateWithoutDevicesInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -990,6 +1025,7 @@ export type UserUncheckedCreateWithoutDevicesInput = {
   status?: $Enums.UserStatus
   gems?: number
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: Date | string | null
   deletedAt?: Date | string | null
   deletedBy?: string | null
@@ -1026,6 +1062,7 @@ export type UserUpdateWithoutDevicesInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1046,6 +1083,7 @@ export type UserUncheckedUpdateWithoutDevicesInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
   hasPlan?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  snapLineTutorialCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1115,6 +1153,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   gems?: boolean
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
@@ -1137,6 +1176,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   gems?: boolean
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
@@ -1154,6 +1194,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   gems?: boolean
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
@@ -1171,6 +1212,7 @@ export type UserSelectScalar = {
   status?: boolean
   gems?: boolean
   hasPlan?: boolean
+  snapLineTutorialCompleted?: boolean
   lastLoginAt?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
@@ -1178,7 +1220,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "avatar" | "role" | "status" | "gems" | "hasPlan" | "lastLoginAt" | "deletedAt" | "deletedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "avatar" | "role" | "status" | "gems" | "hasPlan" | "snapLineTutorialCompleted" | "lastLoginAt" | "deletedAt" | "deletedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gemTransaction?: boolean | Prisma.User$gemTransactionArgs<ExtArgs>
   devices?: boolean | Prisma.User$devicesArgs<ExtArgs>
@@ -1207,6 +1249,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     status: $Enums.UserStatus
     gems: number
     hasPlan: boolean
+    snapLineTutorialCompleted: boolean
     lastLoginAt: Date | null
     deletedAt: Date | null
     deletedBy: string | null
@@ -1648,6 +1691,7 @@ export interface UserFieldRefs {
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
   readonly gems: Prisma.FieldRef<"User", 'Int'>
   readonly hasPlan: Prisma.FieldRef<"User", 'Boolean'>
+  readonly snapLineTutorialCompleted: Prisma.FieldRef<"User", 'Boolean'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly deletedBy: Prisma.FieldRef<"User", 'String'>

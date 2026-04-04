@@ -902,6 +902,7 @@ export const UserScalarFieldEnum = {
   status: 'status',
   gems: 'gems',
   hasPlan: 'hasPlan',
+  snapLineTutorialCompleted: 'snapLineTutorialCompleted',
   lastLoginAt: 'lastLoginAt',
   deletedAt: 'deletedAt',
   deletedBy: 'deletedBy',

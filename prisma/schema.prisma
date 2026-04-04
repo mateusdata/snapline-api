@@ -31,24 +31,25 @@ enum SubscriptionStatus {
 }
 
 model User {
-  id             String           @id @default(uuid(7))
-  name           String
-  email          String           @unique
-  password       String?
-  avatar         String?
-  role           Role             @default(USER)
-  status         UserStatus       @default(ACTIVE)
-  gems           Int              @default(200)
-  hasPlan        Boolean          @default(false)
-  lastLoginAt    DateTime?
-  gemTransaction GemTransaction[]
-  devices        Device[]
-  subscription   Subscription?
-  userAvatars    UserAvatar[]
-  deletedAt      DateTime?
-  deletedBy      String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  id                        String           @id @default(uuid(7))
+  name                      String
+  email                     String           @unique
+  password                  String?
+  avatar                    String?
+  role                      Role             @default(USER)
+  status                    UserStatus       @default(ACTIVE)
+  gems                      Int              @default(200)
+  hasPlan                   Boolean          @default(false)
+  snapLineTutorialCompleted Boolean          @default(false)
+  lastLoginAt               DateTime?
+  gemTransaction            GemTransaction[]
+  devices                   Device[]
+  subscription              Subscription?
+  userAvatars               UserAvatar[]
+  deletedAt                 DateTime?
+  deletedBy                 String?
+  createdAt                 DateTime         @default(now())
+  updatedAt                 DateTime         @updatedAt
 
   @@map("users")
 }
