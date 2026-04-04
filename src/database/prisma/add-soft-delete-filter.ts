@@ -1,14 +1,17 @@
-// Helper soft delete filter function
 export const addSoftDeleteFilter = (include: any): any => 
   Object.entries(include).reduce((acc, [key, value]) => {
     if (typeof value === 'boolean') {
-      acc[key] = { where: { deletedAt: null } };
+      acc[key] = value;
     } else if (value && typeof value === 'object') {
+      const val = value as any;
       acc[key] = {
-        ...(value as object),
-        where: { ...(value as any).where, deletedAt: null },
-        ...((value as any).include && { 
-          include: addSoftDeleteFilter((value as any).include) 
+        ...val,
+        // Só adiciona where se tiver 'where' ou 'take' (sinal de to-many)
+        ...(val.where !== undefined || val.take !== undefined 
+          ? { where: { ...val.where, deletedAt: null } } 
+          : {}),
+        ...(val.include && { 
+          include: addSoftDeleteFilter(val.include) 
         })
       };
     }

@@ -25,7 +25,7 @@ export class UsersService {
   }
 
 
-async createGoogleUser(createUserGoogleDto: CreateUserGoogleDto) {
+  async createGoogleUser(createUserGoogleDto: CreateUserGoogleDto) {
 
     const exitingUser = await this.prismaService.user.findUnique({
       where: { email: createUserGoogleDto.email },
@@ -54,25 +54,29 @@ async createGoogleUser(createUserGoogleDto: CreateUserGoogleDto) {
     return users;
   }
 
-async findMe(id: string) {
-  const user = await this.prismaService.user.findFirst({
-    where: {
-      id,
-    },
-    include: {
-      userAvatars: true,
-    },
-  });
+  async findMe(id: string) {
+    const user = await this.prismaService.user.findFirst({
+      where: { id },
+      include: {
+        userAvatars: {
+          where: { deletedAt: null },  // ✅ to-many, aceita where
+          include: {
+            avatar: true,              // ✅ to-one, só true, sem where
+          },
+        },
+      },
+    });
 
-  if (!user) {
-    throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException('User not found');
+
+    // Filtra avatares deletados no JS
+    user.userAvatars = user.userAvatars.filter(ua => ua.avatar.deletedAt === null);
+
+    return user;
   }
 
-  return user;
-}
-
   async findOne(id: string) {
-   
+
     try {
       const user = await this.prismaService.user.findUnique({
         where: { id },
