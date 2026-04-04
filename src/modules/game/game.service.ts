@@ -19,16 +19,36 @@ export class GameService {
     return gems >= amount;
   }
 
-  async getUserInfo(userId: string): Promise<{ name: string; avatar: string | null }> {
-    const user = await this.prismaService.user.findUnique({
-      where : { id: userId },
-      select: { name: true, avatar: true },
-    });
-    return {
-      name  : user?.name   ?? 'Jogador',
-      avatar: user?.avatar ?? null,
-    };
-  }
+  async getUserInfo(userId: string) {
+  const user = await this.prismaService.user.findUnique({
+    where: { id: userId },
+    select: {
+      name: true,
+      avatar: true,
+      userAvatars: {
+        where: {
+          deletedAt: null,
+          OR: [
+            { expiresAt: null },
+            { expiresAt: { gt: new Date() } }
+          ]
+        },
+        select: {
+          isEquipped: true,
+          avatar: {
+            select: { imageUrl: true }
+          }
+        }
+      }
+    },
+  });
+
+  return {
+    name: user?.name ?? 'Jogador',
+    avatar: user?.avatar ?? null,
+    userAvatars: user?.userAvatars ?? [],
+  };
+}
 
   async applyResult(winnerId: string, loserId: string, amount = 100) {
     const loser = await this.prismaService.user.findUnique({

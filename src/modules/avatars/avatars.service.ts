@@ -71,7 +71,7 @@ async findAll() {
     }
   }
 
-  async buyAvatar(userId: string, avatarId: string) {
+async buyAvatar(userId: string, avatarId: string, isAdUnlock: boolean = false) {
     const avatar = await this.prismaService.avatar.findFirst({
       where: { id: avatarId },
     });
@@ -86,14 +86,14 @@ async findAll() {
       }
     });
 
-    if (existingPurchase) {
-      throw new ConflictException('Você já possui este avatar');
+    if (existingPurchase && !existingPurchase.expiresAt) {
+      throw new ConflictException('Você já possui este avatar permanentemente');
     }
 
     const user = await this.prismaService.user.findUnique({ where: { id: userId } });
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
-    if (!avatar.isPremium && avatar.priceGems > 0) {
+    if (!isAdUnlock && !avatar.isPremium && avatar.priceGems > 0) {
       if (user.gems < avatar.priceGems) {
         throw new BadRequestException('Gemas insuficientes');
       }
@@ -102,7 +102,7 @@ async findAll() {
     return await this.prismaService.$transaction(async (prisma) => {
       let updatedGems = user.gems;
 
-      if (!avatar.isPremium && avatar.priceGems > 0) {
+      if (!isAdUnlock && !avatar.isPremium && avatar.priceGems > 0) {
         updatedGems -= avatar.priceGems;
 
         await prisma.gemTransaction.create({
@@ -112,26 +112,36 @@ async findAll() {
             userId: userId,
           },
         });
+
+        await prisma.user.update({
+          where: { id: userId },
+          data: { gems: updatedGems },
+        });
       }
 
-      await prisma.user.update({
-        where: { id: userId },
-        data: { gems: updatedGems },
-      });
+      const expiresAt = isAdUnlock ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null;
 
-      await prisma.userAvatar.create({
-        data: {
-          userId: userId,
-          avatarId: avatarId,
-          isEquipped: false
-        }
-      });
+      if (existingPurchase) {
+        await prisma.userAvatar.update({
+          where: { userId_avatarId: { userId, avatarId } },
+          data: { expiresAt: expiresAt },
+        });
+      } else {
+        await prisma.userAvatar.create({
+          data: {
+            userId: userId,
+            avatarId: avatarId,
+            isEquipped: false,
+            expiresAt: expiresAt
+          }
+        });
+      }
 
       return prisma.user.findFirst({
         where: { id: userId },
         include: {
           gemTransaction: true,
-          userAvatars: true, // Do jeito que você falou que funcionou!
+          userAvatars: true,
         }
       });
     });
