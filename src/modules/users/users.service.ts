@@ -59,18 +59,31 @@ export class UsersService {
       where: { id },
       include: {
         userAvatars: {
-          where: { deletedAt: null },  // ✅ to-many, aceita where
-          include: {
-            avatar: true,              // ✅ to-one, só true, sem where
+          where: {
+            deletedAt: null,
+            OR: [
+              { expiresAt: null },
+              { expiresAt: { gt: new Date() } }
+            ]
           },
-        },
-      },
+          select: {
+            id: true,
+            isEquipped: true,
+            expiresAt: true,
+            avatar: {
+              select: {
+                id: true,
+                name: true,
+                imageUrl: true,
+                isPremium: true,
+              }
+            }
+          }
+        }
+      }
     });
 
     if (!user) throw new NotFoundException('User not found');
-
-    // Filtra avatares deletados no JS
-    user.userAvatars = user.userAvatars.filter(ua => ua.avatar.deletedAt === null);
 
     return user;
   }

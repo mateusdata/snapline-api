@@ -92,6 +92,7 @@ model UserAvatar {
   isEquipped Boolean   @default(false)
   deletedAt  DateTime?
   deletedBy  String?
+  expiresAt  DateTime? 
   createdAt  DateTime  @default(now())
 
   @@unique([userId, avatarId])

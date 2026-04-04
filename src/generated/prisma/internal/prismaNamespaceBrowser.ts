@@ -132,6 +132,7 @@ export const UserAvatarScalarFieldEnum = {
   isEquipped: 'isEquipped',
   deletedAt: 'deletedAt',
   deletedBy: 'deletedBy',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 } as const
 
