@@ -70,8 +70,8 @@ model Subscription {
 
 model Avatar {
   id          String       @id @default(uuid(7))
-  name        String?
-  imageUrl    String
+  name        String?      @unique
+  imageUrl    String       @unique
   priceGems   Int          @default(0)
   isPremium   Boolean      @default(false)
   userAvatars UserAvatar[]

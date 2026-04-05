@@ -66,6 +66,10 @@ export class UsersService {
               { expiresAt: { gt: new Date() } }
             ]
           },
+          orderBy: [
+            { isDefault: 'desc' }, // 1º: Joga o item que for true lá pro topo
+            { createdAt: 'desc' }  // 2º: Ordena o resto do mais novo pro mais antigo
+          ],
           select: {
             id: true,
             isDefault: true,

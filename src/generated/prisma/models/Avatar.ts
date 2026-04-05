@@ -266,11 +266,11 @@ export type AvatarOrderByWithRelationInput = {
 
 export type AvatarWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
+  imageUrl?: string
   AND?: Prisma.AvatarWhereInput | Prisma.AvatarWhereInput[]
   OR?: Prisma.AvatarWhereInput[]
   NOT?: Prisma.AvatarWhereInput | Prisma.AvatarWhereInput[]
-  name?: Prisma.StringNullableFilter<"Avatar"> | string | null
-  imageUrl?: Prisma.StringFilter<"Avatar"> | string
   priceGems?: Prisma.IntFilter<"Avatar"> | number
   isPremium?: Prisma.BoolFilter<"Avatar"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"Avatar"> | Date | string | null
@@ -278,7 +278,7 @@ export type AvatarWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string
   userAvatars?: Prisma.UserAvatarListRelationFilter
-}, "id">
+}, "id" | "name" | "imageUrl">
 
 export type AvatarOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
