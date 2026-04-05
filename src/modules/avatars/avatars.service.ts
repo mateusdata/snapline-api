@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAvatarDto } from './dto/create-avatar.dto';
 import { UpdateAvatarDto } from './dto/update-avatar.dto';
 import { PrismaService } from 'src/database/prisma/prisma.service';
@@ -21,7 +21,6 @@ export class AvatarsService {
     try {
       const cached = await this.cacheManager.get('avatars');
       if (cached) {
-        Logger.debug('Avatars retornados do cache');
         return cached;
       }
 
@@ -30,11 +29,9 @@ export class AvatarsService {
         orderBy: { priceGems: 'asc' },
       });
 
-      await this.cacheManager.set('avatars', avatars, 3600000); // 1 hora em milissegundos
-      Logger.debug('Avatars retornados do banco e salvos no cache');
+      await this.cacheManager.set('avatars', avatars, 3600000);
       return avatars;
     } catch (error) {
-      Logger.error('Erro ao buscar avatars', error);
       throw error;
     }
   }
@@ -111,10 +108,15 @@ export class AvatarsService {
 
       const expiresAt = isAdUnlock ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null;
 
+      await prisma.userAvatar.updateMany({
+        where: { userId: userId },
+        data: { isDefault: false }
+      });
+
       if (existingPurchase) {
         await prisma.userAvatar.update({
           where: { userId_avatarId: { userId, avatarId } },
-          data: { expiresAt: expiresAt },
+          data: { expiresAt: expiresAt, isDefault: true },
         });
       } else {
         await prisma.userAvatar.create({
@@ -122,12 +124,11 @@ export class AvatarsService {
             userId: userId,
             avatarId: avatarId,
             expiresAt: expiresAt,
-            isDefault: false // Já nasce como false, o usuário tem que equipar depois
+            isDefault: true
           }
         });
       }
 
-      // CORREÇÃO: Atualiza SÓ as gemas, não mexe no profileImage!
       await prisma.user.update({
         where: { id: userId },
         data: { 
@@ -144,7 +145,6 @@ export class AvatarsService {
               deletedAt: null,
               OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }]
             },
-            // CORREÇÃO: Adicionado o isDefault aqui no select
             select: { id: true, isDefault: true, expiresAt: true, avatar: true }
           }
         }
@@ -170,22 +170,18 @@ export class AvatarsService {
       throw new BadRequestException('O tempo desta peça expirou. Libere-a novamente!');
     }
 
-    // CORREÇÃO: Transaction para zerar todas as flags e ativar apenas a escolhida
     return await this.prismaService.$transaction(async (prisma) => {
       
-      // 1. Zera o isDefault de todas as peças desse usuário
       await prisma.userAvatar.updateMany({
         where: { userId: userId },
         data: { isDefault: false }
       });
 
-      // 2. Coloca o isDefault apenas na peça selecionada
       await prisma.userAvatar.update({
         where: { userId_avatarId: { userId, avatarId } },
         data: { isDefault: true }
       });
 
-      // 3. Retorna o usuário com a lista de avatares atualizada
       return prisma.user.findUnique({
         where: { id: userId },
         include: {

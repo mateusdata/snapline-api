@@ -23,13 +23,27 @@ export class GameService {
       where: { id: userId },
       select: {
         name: true,
-        profileImage: true, 
+        profileImage: true,
+        userAvatars: {
+          where: {
+            deletedAt: null,
+            isDefault: true,
+            OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }]
+          },
+          select: {
+            isDefault: true,
+            avatar: {
+              select: { imageUrl: true }
+            }
+          }
+        }
       },
     });
 
     return {
       name: user?.name ?? 'Jogador',
-      profileImage: user?.profileImage ?? null, 
+      profileImage: user?.profileImage ?? null,
+      userAvatars: user?.userAvatars ?? [],
     };
   }
 
