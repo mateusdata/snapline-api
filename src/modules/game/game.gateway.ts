@@ -399,7 +399,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     const base = { code: room.code, firstTurn: room.turn, ...this.roomPayload(room) }
 
-    // cada jogador recebe os dados do OUTRO
+    // cada jogador recebe os dados do OUTRO.
+    // Como a gente refatorou o getUserInfo, p2Info.avatar e p1Info.avatar já são as URLs das imagens!
     this.server.to(p1.socketId).emit('gameStart', { ...base, opponent: p2Info })
     this.server.to(p2.socketId).emit('gameStart', { ...base, opponent: p1Info })
 

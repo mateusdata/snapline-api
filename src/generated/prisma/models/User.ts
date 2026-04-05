@@ -39,7 +39,7 @@ export type UserMinAggregateOutputType = {
   name: string | null
   email: string | null
   password: string | null
-  avatar: string | null
+  profileImage: string | null
   role: $Enums.Role | null
   status: $Enums.UserStatus | null
   gems: number | null
@@ -57,7 +57,7 @@ export type UserMaxAggregateOutputType = {
   name: string | null
   email: string | null
   password: string | null
-  avatar: string | null
+  profileImage: string | null
   role: $Enums.Role | null
   status: $Enums.UserStatus | null
   gems: number | null
@@ -75,7 +75,7 @@ export type UserCountAggregateOutputType = {
   name: number
   email: number
   password: number
-  avatar: number
+  profileImage: number
   role: number
   status: number
   gems: number
@@ -103,7 +103,7 @@ export type UserMinAggregateInputType = {
   name?: true
   email?: true
   password?: true
-  avatar?: true
+  profileImage?: true
   role?: true
   status?: true
   gems?: true
@@ -121,7 +121,7 @@ export type UserMaxAggregateInputType = {
   name?: true
   email?: true
   password?: true
-  avatar?: true
+  profileImage?: true
   role?: true
   status?: true
   gems?: true
@@ -139,7 +139,7 @@ export type UserCountAggregateInputType = {
   name?: true
   email?: true
   password?: true
-  avatar?: true
+  profileImage?: true
   role?: true
   status?: true
   gems?: true
@@ -244,7 +244,7 @@ export type UserGroupByOutputType = {
   name: string
   email: string
   password: string | null
-  avatar: string | null
+  profileImage: string | null
   role: $Enums.Role
   status: $Enums.UserStatus
   gems: number
@@ -285,7 +285,7 @@ export type UserWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringNullableFilter<"User"> | string | null
-  avatar?: Prisma.StringNullableFilter<"User"> | string | null
+  profileImage?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   gems?: Prisma.IntFilter<"User"> | number
@@ -307,7 +307,7 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
-  avatar?: Prisma.SortOrderInput | Prisma.SortOrder
+  profileImage?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
@@ -332,7 +332,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringNullableFilter<"User"> | string | null
-  avatar?: Prisma.StringNullableFilter<"User"> | string | null
+  profileImage?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   gems?: Prisma.IntFilter<"User"> | number
@@ -354,7 +354,7 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
-  avatar?: Prisma.SortOrderInput | Prisma.SortOrder
+  profileImage?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
@@ -380,7 +380,7 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  profileImage?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   gems?: Prisma.IntWithAggregatesFilter<"User"> | number
@@ -398,7 +398,7 @@ export type UserCreateInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -420,7 +420,7 @@ export type UserUncheckedCreateInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -442,7 +442,7 @@ export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -464,7 +464,7 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -486,7 +486,7 @@ export type UserCreateManyInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -504,7 +504,7 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -522,7 +522,7 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -540,7 +540,7 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  avatar?: Prisma.SortOrder
+  profileImage?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
@@ -562,7 +562,7 @@ export type UserMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  avatar?: Prisma.SortOrder
+  profileImage?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
@@ -580,7 +580,7 @@ export type UserMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  avatar?: Prisma.SortOrder
+  profileImage?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   gems?: Prisma.SortOrder
@@ -699,7 +699,7 @@ export type UserCreateWithoutSubscriptionInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -720,7 +720,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -757,7 +757,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -778,7 +778,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -799,7 +799,7 @@ export type UserCreateWithoutUserAvatarsInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -820,7 +820,7 @@ export type UserUncheckedCreateWithoutUserAvatarsInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -857,7 +857,7 @@ export type UserUpdateWithoutUserAvatarsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -878,7 +878,7 @@ export type UserUncheckedUpdateWithoutUserAvatarsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -899,7 +899,7 @@ export type UserCreateWithoutGemTransactionInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -920,7 +920,7 @@ export type UserUncheckedCreateWithoutGemTransactionInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -957,7 +957,7 @@ export type UserUpdateWithoutGemTransactionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -978,7 +978,7 @@ export type UserUncheckedUpdateWithoutGemTransactionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -999,7 +999,7 @@ export type UserCreateWithoutDevicesInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -1020,7 +1020,7 @@ export type UserUncheckedCreateWithoutDevicesInput = {
   name: string
   email: string
   password?: string | null
-  avatar?: string | null
+  profileImage?: string | null
   role?: $Enums.Role
   status?: $Enums.UserStatus
   gems?: number
@@ -1057,7 +1057,7 @@ export type UserUpdateWithoutDevicesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1078,7 +1078,7 @@ export type UserUncheckedUpdateWithoutDevicesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   gems?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1148,7 +1148,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   email?: boolean
   password?: boolean
-  avatar?: boolean
+  profileImage?: boolean
   role?: boolean
   status?: boolean
   gems?: boolean
@@ -1171,7 +1171,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   email?: boolean
   password?: boolean
-  avatar?: boolean
+  profileImage?: boolean
   role?: boolean
   status?: boolean
   gems?: boolean
@@ -1189,7 +1189,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   email?: boolean
   password?: boolean
-  avatar?: boolean
+  profileImage?: boolean
   role?: boolean
   status?: boolean
   gems?: boolean
@@ -1207,7 +1207,7 @@ export type UserSelectScalar = {
   name?: boolean
   email?: boolean
   password?: boolean
-  avatar?: boolean
+  profileImage?: boolean
   role?: boolean
   status?: boolean
   gems?: boolean
@@ -1220,7 +1220,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "avatar" | "role" | "status" | "gems" | "hasPlan" | "snapLineTutorialCompleted" | "lastLoginAt" | "deletedAt" | "deletedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "profileImage" | "role" | "status" | "gems" | "hasPlan" | "snapLineTutorialCompleted" | "lastLoginAt" | "deletedAt" | "deletedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gemTransaction?: boolean | Prisma.User$gemTransactionArgs<ExtArgs>
   devices?: boolean | Prisma.User$devicesArgs<ExtArgs>
@@ -1244,7 +1244,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     email: string
     password: string | null
-    avatar: string | null
+    profileImage: string | null
     role: $Enums.Role
     status: $Enums.UserStatus
     gems: number
@@ -1686,7 +1686,7 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
-  readonly avatar: Prisma.FieldRef<"User", 'String'>
+  readonly profileImage: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
   readonly gems: Prisma.FieldRef<"User", 'Int'>

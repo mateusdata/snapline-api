@@ -28,7 +28,7 @@ export type UserAvatarMinAggregateOutputType = {
   id: string | null
   userId: string | null
   avatarId: string | null
-  isEquipped: boolean | null
+  isDefault: boolean | null
   deletedAt: Date | null
   deletedBy: string | null
   expiresAt: Date | null
@@ -39,7 +39,7 @@ export type UserAvatarMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   avatarId: string | null
-  isEquipped: boolean | null
+  isDefault: boolean | null
   deletedAt: Date | null
   deletedBy: string | null
   expiresAt: Date | null
@@ -50,7 +50,7 @@ export type UserAvatarCountAggregateOutputType = {
   id: number
   userId: number
   avatarId: number
-  isEquipped: number
+  isDefault: number
   deletedAt: number
   deletedBy: number
   expiresAt: number
@@ -63,7 +63,7 @@ export type UserAvatarMinAggregateInputType = {
   id?: true
   userId?: true
   avatarId?: true
-  isEquipped?: true
+  isDefault?: true
   deletedAt?: true
   deletedBy?: true
   expiresAt?: true
@@ -74,7 +74,7 @@ export type UserAvatarMaxAggregateInputType = {
   id?: true
   userId?: true
   avatarId?: true
-  isEquipped?: true
+  isDefault?: true
   deletedAt?: true
   deletedBy?: true
   expiresAt?: true
@@ -85,7 +85,7 @@ export type UserAvatarCountAggregateInputType = {
   id?: true
   userId?: true
   avatarId?: true
-  isEquipped?: true
+  isDefault?: true
   deletedAt?: true
   deletedBy?: true
   expiresAt?: true
@@ -169,7 +169,7 @@ export type UserAvatarGroupByOutputType = {
   id: string
   userId: string
   avatarId: string
-  isEquipped: boolean
+  isDefault: boolean
   deletedAt: Date | null
   deletedBy: string | null
   expiresAt: Date | null
@@ -201,7 +201,7 @@ export type UserAvatarWhereInput = {
   id?: Prisma.StringFilter<"UserAvatar"> | string
   userId?: Prisma.StringFilter<"UserAvatar"> | string
   avatarId?: Prisma.StringFilter<"UserAvatar"> | string
-  isEquipped?: Prisma.BoolFilter<"UserAvatar"> | boolean
+  isDefault?: Prisma.BoolFilter<"UserAvatar"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"UserAvatar"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"UserAvatar"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"UserAvatar"> | Date | string | null
@@ -214,7 +214,7 @@ export type UserAvatarOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   avatarId?: Prisma.SortOrder
-  isEquipped?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -231,7 +231,7 @@ export type UserAvatarWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserAvatarWhereInput | Prisma.UserAvatarWhereInput[]
   userId?: Prisma.StringFilter<"UserAvatar"> | string
   avatarId?: Prisma.StringFilter<"UserAvatar"> | string
-  isEquipped?: Prisma.BoolFilter<"UserAvatar"> | boolean
+  isDefault?: Prisma.BoolFilter<"UserAvatar"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"UserAvatar"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"UserAvatar"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"UserAvatar"> | Date | string | null
@@ -244,7 +244,7 @@ export type UserAvatarOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   avatarId?: Prisma.SortOrder
-  isEquipped?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -261,7 +261,7 @@ export type UserAvatarScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"UserAvatar"> | string
   userId?: Prisma.StringWithAggregatesFilter<"UserAvatar"> | string
   avatarId?: Prisma.StringWithAggregatesFilter<"UserAvatar"> | string
-  isEquipped?: Prisma.BoolWithAggregatesFilter<"UserAvatar"> | boolean
+  isDefault?: Prisma.BoolWithAggregatesFilter<"UserAvatar"> | boolean
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserAvatar"> | Date | string | null
   deletedBy?: Prisma.StringNullableWithAggregatesFilter<"UserAvatar"> | string | null
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserAvatar"> | Date | string | null
@@ -270,7 +270,7 @@ export type UserAvatarScalarWhereWithAggregatesInput = {
 
 export type UserAvatarCreateInput = {
   id?: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -283,7 +283,7 @@ export type UserAvatarUncheckedCreateInput = {
   id?: string
   userId: string
   avatarId: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -292,7 +292,7 @@ export type UserAvatarUncheckedCreateInput = {
 
 export type UserAvatarUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -305,7 +305,7 @@ export type UserAvatarUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarId?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -316,7 +316,7 @@ export type UserAvatarCreateManyInput = {
   id?: string
   userId: string
   avatarId: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -325,7 +325,7 @@ export type UserAvatarCreateManyInput = {
 
 export type UserAvatarUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -336,7 +336,7 @@ export type UserAvatarUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarId?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -362,7 +362,7 @@ export type UserAvatarCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   avatarId?: Prisma.SortOrder
-  isEquipped?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -373,7 +373,7 @@ export type UserAvatarMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   avatarId?: Prisma.SortOrder
-  isEquipped?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -384,7 +384,7 @@ export type UserAvatarMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   avatarId?: Prisma.SortOrder
-  isEquipped?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   deletedBy?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -477,7 +477,7 @@ export type UserAvatarUncheckedUpdateManyWithoutAvatarNestedInput = {
 
 export type UserAvatarCreateWithoutUserInput = {
   id?: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -488,7 +488,7 @@ export type UserAvatarCreateWithoutUserInput = {
 export type UserAvatarUncheckedCreateWithoutUserInput = {
   id?: string
   avatarId: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -528,7 +528,7 @@ export type UserAvatarScalarWhereInput = {
   id?: Prisma.StringFilter<"UserAvatar"> | string
   userId?: Prisma.StringFilter<"UserAvatar"> | string
   avatarId?: Prisma.StringFilter<"UserAvatar"> | string
-  isEquipped?: Prisma.BoolFilter<"UserAvatar"> | boolean
+  isDefault?: Prisma.BoolFilter<"UserAvatar"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"UserAvatar"> | Date | string | null
   deletedBy?: Prisma.StringNullableFilter<"UserAvatar"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"UserAvatar"> | Date | string | null
@@ -537,7 +537,7 @@ export type UserAvatarScalarWhereInput = {
 
 export type UserAvatarCreateWithoutAvatarInput = {
   id?: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -548,7 +548,7 @@ export type UserAvatarCreateWithoutAvatarInput = {
 export type UserAvatarUncheckedCreateWithoutAvatarInput = {
   id?: string
   userId: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -584,7 +584,7 @@ export type UserAvatarUpdateManyWithWhereWithoutAvatarInput = {
 export type UserAvatarCreateManyUserInput = {
   id?: string
   avatarId: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -593,7 +593,7 @@ export type UserAvatarCreateManyUserInput = {
 
 export type UserAvatarUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -604,7 +604,7 @@ export type UserAvatarUpdateWithoutUserInput = {
 export type UserAvatarUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   avatarId?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -614,7 +614,7 @@ export type UserAvatarUncheckedUpdateWithoutUserInput = {
 export type UserAvatarUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   avatarId?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -624,7 +624,7 @@ export type UserAvatarUncheckedUpdateManyWithoutUserInput = {
 export type UserAvatarCreateManyAvatarInput = {
   id?: string
   userId: string
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: Date | string | null
   deletedBy?: string | null
   expiresAt?: Date | string | null
@@ -633,7 +633,7 @@ export type UserAvatarCreateManyAvatarInput = {
 
 export type UserAvatarUpdateWithoutAvatarInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -644,7 +644,7 @@ export type UserAvatarUpdateWithoutAvatarInput = {
 export type UserAvatarUncheckedUpdateWithoutAvatarInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -654,7 +654,7 @@ export type UserAvatarUncheckedUpdateWithoutAvatarInput = {
 export type UserAvatarUncheckedUpdateManyWithoutAvatarInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  isEquipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -667,7 +667,7 @@ export type UserAvatarSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   userId?: boolean
   avatarId?: boolean
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
   expiresAt?: boolean
@@ -680,7 +680,7 @@ export type UserAvatarSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   userId?: boolean
   avatarId?: boolean
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
   expiresAt?: boolean
@@ -693,7 +693,7 @@ export type UserAvatarSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   userId?: boolean
   avatarId?: boolean
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
   expiresAt?: boolean
@@ -706,14 +706,14 @@ export type UserAvatarSelectScalar = {
   id?: boolean
   userId?: boolean
   avatarId?: boolean
-  isEquipped?: boolean
+  isDefault?: boolean
   deletedAt?: boolean
   deletedBy?: boolean
   expiresAt?: boolean
   createdAt?: boolean
 }
 
-export type UserAvatarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "avatarId" | "isEquipped" | "deletedAt" | "deletedBy" | "expiresAt" | "createdAt", ExtArgs["result"]["userAvatar"]>
+export type UserAvatarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "avatarId" | "isDefault" | "deletedAt" | "deletedBy" | "expiresAt" | "createdAt", ExtArgs["result"]["userAvatar"]>
 export type UserAvatarInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   avatar?: boolean | Prisma.AvatarDefaultArgs<ExtArgs>
@@ -737,7 +737,7 @@ export type $UserAvatarPayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: string
     userId: string
     avatarId: string
-    isEquipped: boolean
+    isDefault: boolean
     deletedAt: Date | null
     deletedBy: string | null
     expiresAt: Date | null
@@ -1170,7 +1170,7 @@ export interface UserAvatarFieldRefs {
   readonly id: Prisma.FieldRef<"UserAvatar", 'String'>
   readonly userId: Prisma.FieldRef<"UserAvatar", 'String'>
   readonly avatarId: Prisma.FieldRef<"UserAvatar", 'String'>
-  readonly isEquipped: Prisma.FieldRef<"UserAvatar", 'Boolean'>
+  readonly isDefault: Prisma.FieldRef<"UserAvatar", 'Boolean'>
   readonly deletedAt: Prisma.FieldRef<"UserAvatar", 'DateTime'>
   readonly deletedBy: Prisma.FieldRef<"UserAvatar", 'String'>
   readonly expiresAt: Prisma.FieldRef<"UserAvatar", 'DateTime'>

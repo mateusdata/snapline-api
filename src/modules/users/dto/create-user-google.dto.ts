@@ -18,11 +18,12 @@ export class CreateUserGoogleDto implements Partial<User> {
   @MaxLength(500)
   @Transform(({ value }) => String(value).toLowerCase())
   email: string;
+
   @ApiProperty({ example: "url-da-imagem-de-avatar" })
   @IsOptional()
   @IsString()
   @MaxLength(1000)
-  avatar?: string;
+  profileImage?: string; 
 }
 
 

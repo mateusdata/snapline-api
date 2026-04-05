@@ -68,7 +68,7 @@ export class UsersService {
           },
           select: {
             id: true,
-            isEquipped: true,
+            isDefault: true,
             expiresAt: true,
             avatar: {
               select: {

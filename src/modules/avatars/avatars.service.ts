@@ -17,27 +17,27 @@ export class AvatarsService {
     });
   }
 
-async findAll() {
-  try {
-    const cached = await this.cacheManager.get('avatars');
-    if (cached) {
-      Logger.debug('Avatars retornados do cache');
-      return cached;
+  async findAll() {
+    try {
+      const cached = await this.cacheManager.get('avatars');
+      if (cached) {
+        Logger.debug('Avatars retornados do cache');
+        return cached;
+      }
+
+      const avatars = await this.prismaService.avatar.findMany({
+        where: { deletedAt: null },
+        orderBy: { priceGems: 'asc' },
+      });
+
+      await this.cacheManager.set('avatars', avatars, 3600000); // 1 hora em milissegundos
+      Logger.debug('Avatars retornados do banco e salvos no cache');
+      return avatars;
+    } catch (error) {
+      Logger.error('Erro ao buscar avatars', error);
+      throw error;
     }
-
-    const avatars = await this.prismaService.avatar.findMany({
-      where: { deletedAt: null },
-      orderBy: { priceGems: 'asc' },
-    });
-
-    await this.cacheManager.set('avatars', avatars, 3600000 ); // 1 hora em milissegundos
-    Logger.debug('Avatars retornados do banco e salvos no cache');
-    return avatars;
-  } catch (error) {
-    Logger.error('Erro ao buscar avatars', error);
-    throw error;
   }
-}
 
   async findOne(id: string) {
     const avatar = await this.prismaService.avatar.findFirst({
@@ -71,19 +71,15 @@ async findAll() {
     }
   }
 
-async buyAvatar(userId: string, avatarId: string, isAdUnlock: boolean = false) {
+  async buyAvatar(userId: string, avatarId: string, isAdUnlock: boolean = false) {
     const avatar = await this.prismaService.avatar.findFirst({
       where: { id: avatarId },
     });
 
-    if (!avatar) {
-      throw new NotFoundException('Avatar não encontrado na loja');
-    }
+    if (!avatar) throw new NotFoundException('Avatar não encontrado na loja');
 
     const existingPurchase = await this.prismaService.userAvatar.findUnique({
-      where: {
-        userId_avatarId: { userId, avatarId }
-      }
+      where: { userId_avatarId: { userId, avatarId } }
     });
 
     if (existingPurchase && !existingPurchase.expiresAt) {
@@ -104,18 +100,12 @@ async buyAvatar(userId: string, avatarId: string, isAdUnlock: boolean = false) {
 
       if (!isAdUnlock && !avatar.isPremium && avatar.priceGems > 0) {
         updatedGems -= avatar.priceGems;
-
         await prisma.gemTransaction.create({
           data: {
             amount: -avatar.priceGems,
             reason: `Compra de avatar: ${avatar.name || avatar.id}`,
             userId: userId,
           },
-        });
-
-        await prisma.user.update({
-          where: { id: userId },
-          data: { gems: updatedGems },
         });
       }
 
@@ -131,17 +121,81 @@ async buyAvatar(userId: string, avatarId: string, isAdUnlock: boolean = false) {
           data: {
             userId: userId,
             avatarId: avatarId,
-            isEquipped: false,
-            expiresAt: expiresAt
+            expiresAt: expiresAt,
+            isDefault: false // Já nasce como false, o usuário tem que equipar depois
           }
         });
       }
 
+      // CORREÇÃO: Atualiza SÓ as gemas, não mexe no profileImage!
+      await prisma.user.update({
+        where: { id: userId },
+        data: { 
+          gems: updatedGems
+        },
+      });
+
       return prisma.user.findFirst({
         where: { id: userId },
+        include: { 
+          gemTransaction: true, 
+          userAvatars: {
+            where: {
+              deletedAt: null,
+              OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }]
+            },
+            // CORREÇÃO: Adicionado o isDefault aqui no select
+            select: { id: true, isDefault: true, expiresAt: true, avatar: true }
+          }
+        }
+      });
+    });
+  }
+
+  async defaultAvatar(userId: string, avatarId: string) {
+    const ownership = await this.prismaService.userAvatar.findUnique({
+      where: {
+        userId_avatarId: { userId, avatarId }
+      },
+      include: {
+        avatar: true
+      }
+    });
+
+    if (!ownership || ownership.deletedAt) {
+      throw new NotFoundException('Você não possui esta peça no seu inventário.');
+    }
+
+    if (ownership.expiresAt && new Date(ownership.expiresAt) < new Date()) {
+      throw new BadRequestException('O tempo desta peça expirou. Libere-a novamente!');
+    }
+
+    // CORREÇÃO: Transaction para zerar todas as flags e ativar apenas a escolhida
+    return await this.prismaService.$transaction(async (prisma) => {
+      
+      // 1. Zera o isDefault de todas as peças desse usuário
+      await prisma.userAvatar.updateMany({
+        where: { userId: userId },
+        data: { isDefault: false }
+      });
+
+      // 2. Coloca o isDefault apenas na peça selecionada
+      await prisma.userAvatar.update({
+        where: { userId_avatarId: { userId, avatarId } },
+        data: { isDefault: true }
+      });
+
+      // 3. Retorna o usuário com a lista de avatares atualizada
+      return prisma.user.findUnique({
+        where: { id: userId },
         include: {
-          gemTransaction: true,
-          userAvatars: true,
+          userAvatars: {
+            where: {
+              deletedAt: null,
+              OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }]
+            },
+            select: { id: true, isDefault: true, expiresAt: true, avatar: true }
+          }
         }
       });
     });

@@ -12,7 +12,7 @@ import { RolesGuard } from 'src/common/guards/auth/roles.guard';
 @ApiBearerAuth()
 @UseGuards(RolesGuard)
 export class AvatarsController {
-  constructor(private readonly avatarsService: AvatarsService) {}
+  constructor(private readonly avatarsService: AvatarsService) { }
 
   // Apenas Admin pode criar um avatar novo na loja
   @Rules(Role.ADMIN)
@@ -33,10 +33,18 @@ export class AvatarsController {
     return this.avatarsService.findOne(id);
   }
 
-  // Rota principal: O usuário compra um avatar. O ID vem seguro do token JWT!
   @Post(':id/buy')
-  buyAvatar(@User('sub') userId: string, @Param('id') avatarId: string) {
-    return this.avatarsService.buyAvatar(userId, avatarId);
+  buyAvatar(
+    @User('sub') userId: string, 
+    @Param('id') avatarId: string,
+    @Body('isAdUnlock') isAdUnlock?: boolean
+  ) {
+    return this.avatarsService.buyAvatar(userId, avatarId, isAdUnlock); 
+  }
+
+  @Patch(':id/default')
+  setDefault(@User('sub') userId: string, @Param('id') avatarId: string) {
+    return this.avatarsService.defaultAvatar(userId, avatarId);
   }
 
   // Apenas Admin pode atualizar dados do avatar (preço, foto, etc)

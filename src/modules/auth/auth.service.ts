@@ -59,9 +59,7 @@ export class AuthService {
       const payload = ticket.getPayload();
       if (!payload || !payload.email) throw new UnauthorizedException("Invalid Google ID token payload");
 
-
-
-      await this.userService.createGoogleUser({ email: payload.email, name: payload.name!!, avatar: payload.picture });
+      await this.userService.createGoogleUser({ email: payload.email, name: payload.name!!, profileImage: payload.picture });
 
       const user = await this.create({ email: payload.email });
 
