@@ -21,7 +21,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '100  d' },
+      signOptions: { expiresIn: '100d' },
     }),
     CacheModule.register({isGlobal: true}),
     UsersModule,
