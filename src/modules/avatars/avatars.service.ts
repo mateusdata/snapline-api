@@ -29,7 +29,7 @@ export class AvatarsService {
         orderBy: { priceGems: 'asc' },
       });
 
-      await this.cacheManager.set('avatars', avatars, 3600000);
+      await this.cacheManager.set('avatars', avatars, 2000 );
       return avatars;
     } catch (error) {
       throw error;

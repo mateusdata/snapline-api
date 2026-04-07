@@ -29,6 +29,12 @@ async function main() {
     { name: 'Espertinho', imageUrl: "https://i.postimg.cc/WtkTsfSh/23.png", priceGems: 30000 },
     { name: 'Gaspazinho', imageUrl: "https://i.postimg.cc/3WvY3b9k/24.png", priceGems: 18000 },
     { name: 'Xerife', imageUrl: "https://i.postimg.cc/jC7tRkvn/25.png", priceGems: 40000 },
+    { name: 'Moranguete', imageUrl: "https://i.postimg.cc/C5wHxgJg/3bb7d807-6247-400e-a611-f5f23aeaaf64.png", priceGems: 20000 },
+    { name: 'Abacaxildo', imageUrl: "https://i.postimg.cc/kXQZXJcX/Chat-GPT-Image-7-de-abr-de-2026-01-27-19.png", priceGems: 15000 },
+    { name: 'Cacto', imageUrl: "https://i.postimg.cc/3WvY3b9k/24.png", priceGems: 15000 },
+    { name: 'Laranjudo', imageUrl: "https://i.postimg.cc/KvPVvGN8/Chat-GPT-Image-7-de-abr-de-2026-01-29-28.png", priceGems: 15000 },
+    { name: 'Maçanzete', imageUrl: "https://i.postimg.cc/hvr5sMhM/Chat-GPT-Image-7-de-abr-de-2026-01-39-59.png", priceGems: 15000 },
+    { name: 'Abacatudo', imageUrl: "https://i.postimg.cc/8kr99Bff/Chat-GPT-Image-7-de-abr-de-2026-01-32-40.png", priceGems: 15000 },
   ];
 
   const result = await prisma.avatar.createMany({
