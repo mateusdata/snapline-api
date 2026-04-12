@@ -8,6 +8,8 @@ import { GameService } from './game.service'
 import { Public } from 'src/common/decorators/public'
 
 type Player = 'p1' | 'p2'
+// ── FIX 3: tipo do pendingCmd restaurado do backend antigo ──
+type PendCmd = 'findMatch' | 'createGame' | { type: 'joinGame'; code: string }
 
 interface Piece { id: string; player: Player; position: number }
 interface RoomPlayer { socketId: string; userId: string; role: Player }
@@ -49,7 +51,8 @@ const CONNECTIONS: Record<number, number[]> = {
 
 const VALID_LINES = [[3, 4, 5], [1, 4, 7], [0, 4, 8], [2, 4, 6]]
 
-@WebSocketGateway({ namespace: '/api/game', cors: true })
+// ── FIX 1: pingInterval e pingTimeout adicionados ──
+@WebSocketGateway({ namespace: '/api/game', cors: true, pingInterval: 5000, pingTimeout: 10000 })
 @Public()
 export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server
@@ -59,12 +62,15 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly socketUser = new Map<string, string>()
   private readonly activeUsers = new Map<string, ActiveUser>()
   private readonly challenges = new Map<string, NodeJS.Timeout>()
+  // ── FIX 3: mapa de comandos pendentes restaurado ──
+  private readonly pendingCmd = new Map<string, PendCmd>()
 
   constructor(private readonly gameService: GameService) {}
 
   handleConnection(client: Socket) {}
 
   handleDisconnect(client: Socket) {
+    this.pendingCmd.delete(client.id)
     this.doLeaveRoom(client, false)
     const userId = this.socketUser.get(client.id)
     if (userId) {
@@ -84,19 +90,35 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     const gems = await this.gameService.getGems(userId)
     const userInfo = await this.gameService.getUserInfo(userId)
-    
+
     this.socketUser.set(client.id, userId)
 
-    this.activeUsers.set(userId, {
-      socketId: client.id,
-      userId,
-      name: userInfo.name,
-      profileImage: userInfo.profileImage ?? null,
-      pieceAvatar: userInfo.userAvatars.find(a => a.isDefault)?.avatar?.imageUrl ?? userInfo.profileImage ?? null
-    })
+    // ── FIX 2: atualiza socketId se o userId já existia (reconexão) ──
+    const existing = this.activeUsers.get(userId)
+    if (existing) {
+      existing.socketId = client.id
+    } else {
+      this.activeUsers.set(userId, {
+        socketId: client.id,
+        userId,
+        name: userInfo.name,
+        profileImage: userInfo.profileImage ?? null,
+        pieceAvatar: userInfo.userAvatars.find((a: any) => a.isDefault)?.avatar?.imageUrl ?? userInfo.profileImage ?? null,
+      })
+    }
 
     client.emit('authOk', { gems })
     this.broadcastOnlinePlayers()
+
+    // ── FIX 3: executa comando enfileirado antes do auth completar ──
+    const pending = this.pendingCmd.get(client.id)
+    if (pending) {
+      this.pendingCmd.delete(client.id)
+      if (pending === 'findMatch')       await this.doFindMatch(client)
+      else if (pending === 'createGame') await this.doCreateGame(client)
+      else if (typeof pending === 'object' && pending.type === 'joinGame')
+        await this.doJoinGame(pending.code, client)
+    }
   }
 
   private broadcastOnlinePlayers() {
@@ -113,8 +135,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.doLeaveRoom(client, true)
   }
 
+  // ── FIX 3: enfileira se auth ainda não completou ──
   @SubscribeMessage('findMatch')
   async findMatch(@ConnectedSocket() client: Socket) {
+    if (!this.socketUser.has(client.id)) {
+      this.pendingCmd.set(client.id, 'findMatch'); return
+    }
     await this.doFindMatch(client)
   }
 
@@ -156,6 +182,76 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  // ── FIX 3: createGame e joinGame também enfileiram ──
+  @SubscribeMessage('createGame')
+  async createGame(@ConnectedSocket() client: Socket) {
+    if (!this.socketUser.has(client.id)) {
+      this.pendingCmd.set(client.id, 'createGame'); return
+    }
+    await this.doCreateGame(client)
+  }
+
+  private async doCreateGame(client: Socket) {
+    if (this.socketRoom.has(client.id)) return client.emit('error', 'Voce ja esta em uma sala')
+
+    const userId = this.socketUser.get(client.id)
+    if (!userId) return
+
+    const user = this.activeUsers.get(userId)
+    if (!user) return
+
+    if (!(await this.gameService.hasEnoughGems(user.userId))) return client.emit('error', 'Gemas insuficientes')
+
+    const code = this.genCode()
+    const room: RoomState = {
+      code,
+      players: [{ socketId: client.id, userId: user.userId, role: 'p1' }],
+      pieces: INITIAL_PIECES.map(p => ({ ...p })),
+      turn: 'p1',
+      wins: { p1: 0, p2: 0 },
+      gemsAtStake: 100,
+      creatorId: client.id,
+      gameOver: false,
+      isPrivate: true,
+    }
+    this.rooms.set(code, room)
+    client.join(code)
+    this.socketRoom.set(client.id, code)
+    client.emit('roomCreated', { code })
+  }
+
+  @SubscribeMessage('joinGame')
+  async joinGame(
+    @MessageBody() code: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    if (!this.socketUser.has(client.id)) {
+      this.pendingCmd.set(client.id, { type: 'joinGame', code }); return
+    }
+    await this.doJoinGame(code, client)
+  }
+
+  private async doJoinGame(code: string, client: Socket) {
+    if (this.socketRoom.has(client.id)) return client.emit('error', 'Voce ja esta em uma sala')
+
+    const userId = this.socketUser.get(client.id)
+    if (!userId) return
+
+    const user = this.activeUsers.get(userId)
+    if (!user) return
+
+    if (!(await this.gameService.hasEnoughGems(user.userId))) return client.emit('error', 'Gemas insuficientes')
+
+    const room = this.rooms.get(code.toUpperCase())
+    if (!room)                    return client.emit('error', 'Codigo expirado')
+    if (room.players.length >= 2) return client.emit('error', 'Sala cheia')
+
+    room.players.push({ socketId: client.id, userId: user.userId, role: 'p2' })
+    client.join(code.toUpperCase())
+    this.socketRoom.set(client.id, code.toUpperCase())
+    await this.emitGameStart(room)
+  }
+
   @SubscribeMessage('challengePlayer')
   async challengePlayer(@MessageBody() targetUserId: string, @ConnectedSocket() client: Socket) {
     const challengerId = this.socketUser.get(client.id)
@@ -171,7 +267,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (this.socketRoom.has(targetUser.socketId)) return client.emit('error', 'Jogador em partida')
 
     const challengeId = `${challengerUser.userId}-${targetUserId}`
-    
+
     this.server.to(targetUser.socketId).emit('challengeReceived', {
       id: challengerUser.userId,
       name: challengerUser.name,
@@ -210,7 +306,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       code,
       players: [
         { socketId: challengerUser.socketId, userId: challengerUser.userId, role: 'p1' },
-        { socketId: targetUser.socketId, userId: targetUser.userId, role: 'p2' }
+        { socketId: targetUser.socketId, userId: targetUser.userId, role: 'p2' },
       ],
       pieces: INITIAL_PIECES.map(p => ({ ...p })),
       turn: 'p1',
@@ -222,7 +318,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     this.rooms.set(code, room)
-    
+
     this.server.in(challengerUser.socketId).socketsJoin(code)
     client.join(code)
 
@@ -389,22 +485,27 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const [p1, p2] = room.players
     room.turn = Math.random() < 0.5 ? 'p1' : 'p2'
 
-    // Busca os dados diretamente do cache (activeUsers)
     const p1Info = this.activeUsers.get(p1.userId)
     const p2Info = this.activeUsers.get(p2.userId)
 
-    if(!p1Info || !p2Info) return; // Segurança caso algum não seja encontrado
+    // ── FIX 4: erro explícito em vez de return silencioso ──
+    if (!p1Info || !p2Info) {
+      this.server.to(p1.socketId).emit('error', 'Erro ao iniciar partida, tente novamente')
+      this.server.to(p2.socketId).emit('error', 'Erro ao iniciar partida, tente novamente')
+      this.cleanRoom(room)
+      return
+    }
 
     const base = { code: room.code, firstTurn: room.turn, ...this.roomPayload(room) }
 
-    this.server.to(p1.socketId).emit('gameStart', { 
-      ...base, 
-      opponent: { name: p2Info.name, profileImage: p2Info.profileImage, pieceAvatar: p2Info.pieceAvatar } 
+    this.server.to(p1.socketId).emit('gameStart', {
+      ...base,
+      opponent: { name: p2Info.name, profileImage: p2Info.profileImage, pieceAvatar: p2Info.pieceAvatar },
     })
-    
-    this.server.to(p2.socketId).emit('gameStart', { 
-      ...base, 
-      opponent: { name: p1Info.name, profileImage: p1Info.profileImage, pieceAvatar: p1Info.pieceAvatar } 
+
+    this.server.to(p2.socketId).emit('gameStart', {
+      ...base,
+      opponent: { name: p1Info.name, profileImage: p1Info.profileImage, pieceAvatar: p1Info.pieceAvatar },
     })
 
     this.server.to(p1.socketId).emit('yourRole', 'p1')
