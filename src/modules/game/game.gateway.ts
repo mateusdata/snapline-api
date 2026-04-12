@@ -28,7 +28,8 @@ interface ActiveUser {
   socketId: string
   userId: string
   name: string
-  avatar: string | null
+  profileImage: string | null
+  pieceAvatar: string | null
 }
 
 const INITIAL_PIECES: Piece[] = [
@@ -63,9 +64,8 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(client: Socket) {}
 
-handleDisconnect(client: Socket) {
+  handleDisconnect(client: Socket) {
     this.doLeaveRoom(client, false)
-    
     const userId = this.socketUser.get(client.id)
     if (userId) {
       const activeUser = this.activeUsers.get(userId)
@@ -73,7 +73,6 @@ handleDisconnect(client: Socket) {
         this.activeUsers.delete(userId)
       }
     }
-    
     this.socketUser.delete(client.id)
     this.broadcastOnlinePlayers()
   }
@@ -86,19 +85,14 @@ handleDisconnect(client: Socket) {
     const gems = await this.gameService.getGems(userId)
     const userInfo = await this.gameService.getUserInfo(userId)
     
-    let defaultAvatar = userInfo.profileImage
-    const eq = userInfo.userAvatars.find(a => a.isDefault)
-    if (eq && eq.avatar.imageUrl) {
-      defaultAvatar = eq.avatar.imageUrl
-    }
-
     this.socketUser.set(client.id, userId)
 
     this.activeUsers.set(userId, {
       socketId: client.id,
       userId,
       name: userInfo.name,
-      avatar: defaultAvatar
+      profileImage: userInfo.profileImage ?? null,
+      pieceAvatar: userInfo.userAvatars.find(a => a.isDefault)?.avatar?.imageUrl ?? userInfo.profileImage ?? null
     })
 
     client.emit('authOk', { gems })
@@ -109,7 +103,7 @@ handleDisconnect(client: Socket) {
     const players = Array.from(this.activeUsers.values()).map(u => ({
       id: u.userId,
       name: u.name,
-      avatar: u.avatar
+      profileImage: u.profileImage,
     }))
     this.server.emit('onlinePlayers', players)
   }
@@ -181,7 +175,7 @@ handleDisconnect(client: Socket) {
     this.server.to(targetUser.socketId).emit('challengeReceived', {
       id: challengerUser.userId,
       name: challengerUser.name,
-      avatar: challengerUser.avatar
+      profileImage: challengerUser.profileImage,
     })
 
     const timeout = setTimeout(() => {
@@ -395,18 +389,23 @@ handleDisconnect(client: Socket) {
     const [p1, p2] = room.players
     room.turn = Math.random() < 0.5 ? 'p1' : 'p2'
 
-    const [p1Info, p2Info] = await Promise.all([
-      this.gameService.getUserInfo(p1.userId),
-      this.gameService.getUserInfo(p2.userId),
-    ])
+    // Busca os dados diretamente do cache (activeUsers)
+    const p1Info = this.activeUsers.get(p1.userId)
+    const p2Info = this.activeUsers.get(p2.userId)
 
-    let a1 = p1Info.profileImage; const e1 = p1Info.userAvatars.find(a => a.isDefault); if(e1) a1 = e1.avatar.imageUrl;
-    let a2 = p2Info.profileImage; const e2 = p2Info.userAvatars.find(a => a.isDefault); if(e2) a2 = e2.avatar.imageUrl;
+    if(!p1Info || !p2Info) return; // Segurança caso algum não seja encontrado
 
     const base = { code: room.code, firstTurn: room.turn, ...this.roomPayload(room) }
 
-    this.server.to(p1.socketId).emit('gameStart', { ...base, opponent: { name: p2Info.name, profileImage: a2 } })
-    this.server.to(p2.socketId).emit('gameStart', { ...base, opponent: { name: p1Info.name, profileImage: a1 } })
+    this.server.to(p1.socketId).emit('gameStart', { 
+      ...base, 
+      opponent: { name: p2Info.name, profileImage: p2Info.profileImage, pieceAvatar: p2Info.pieceAvatar } 
+    })
+    
+    this.server.to(p2.socketId).emit('gameStart', { 
+      ...base, 
+      opponent: { name: p1Info.name, profileImage: p1Info.profileImage, pieceAvatar: p1Info.pieceAvatar } 
+    })
 
     this.server.to(p1.socketId).emit('yourRole', 'p1')
     this.server.to(p2.socketId).emit('yourRole', 'p2')
