@@ -3,7 +3,6 @@ import {
   WebSocketServer, ConnectedSocket,
   OnGatewayConnection, OnGatewayDisconnect,
 } from '@nestjs/websockets'
-import { Logger } from '@nestjs/common'
 import { Server, Socket } from 'socket.io'
 import { GameService } from './game.service'
 import { Public } from 'src/common/decorators/public'
@@ -56,6 +55,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private readonly rooms = new Map<string, RoomState>()
   private readonly socketRoom = new Map<string, string>()
+  private readonly socketUser = new Map<string, string>()
   private readonly activeUsers = new Map<string, ActiveUser>()
   private readonly challenges = new Map<string, NodeJS.Timeout>()
 
@@ -63,9 +63,18 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(client: Socket) {}
 
-  handleDisconnect(client: Socket) {
+handleDisconnect(client: Socket) {
     this.doLeaveRoom(client, false)
-    this.activeUsers.delete(client.id)
+    
+    const userId = this.socketUser.get(client.id)
+    if (userId) {
+      const activeUser = this.activeUsers.get(userId)
+      if (activeUser && activeUser.socketId === client.id) {
+        this.activeUsers.delete(userId)
+      }
+    }
+    
+    this.socketUser.delete(client.id)
     this.broadcastOnlinePlayers()
   }
 
@@ -83,7 +92,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       defaultAvatar = eq.avatar.imageUrl
     }
 
-    this.activeUsers.set(client.id, {
+    this.socketUser.set(client.id, userId)
+
+    this.activeUsers.set(userId, {
       socketId: client.id,
       userId,
       name: userInfo.name,
@@ -116,7 +127,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private async doFindMatch(client: Socket) {
     if (this.socketRoom.has(client.id)) return client.emit('error', 'Voce ja esta em uma sala')
 
-    const user = this.activeUsers.get(client.id)
+    const userId = this.socketUser.get(client.id)
+    if (!userId) return
+
+    const user = this.activeUsers.get(userId)
     if (!user) return
 
     if (!(await this.gameService.hasEnoughGems(user.userId))) return client.emit('error', 'Gemas insuficientes')
@@ -150,20 +164,24 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('challengePlayer')
   async challengePlayer(@MessageBody() targetUserId: string, @ConnectedSocket() client: Socket) {
-    const challenger = this.activeUsers.get(client.id)
-    if (!challenger) return
-    if (!(await this.gameService.hasEnoughGems(challenger.userId))) return client.emit('error', 'Gemas insuficientes')
+    const challengerId = this.socketUser.get(client.id)
+    if (!challengerId) return
 
-    const targetUser = Array.from(this.activeUsers.values()).find(u => u.userId === targetUserId)
+    const challengerUser = this.activeUsers.get(challengerId)
+    if (!challengerUser) return
+
+    if (!(await this.gameService.hasEnoughGems(challengerUser.userId))) return client.emit('error', 'Gemas insuficientes')
+
+    const targetUser = this.activeUsers.get(targetUserId)
     if (!targetUser) return client.emit('error', 'Jogador offline')
     if (this.socketRoom.has(targetUser.socketId)) return client.emit('error', 'Jogador em partida')
 
-    const challengeId = `${challenger.userId}-${targetUserId}`
+    const challengeId = `${challengerUser.userId}-${targetUserId}`
     
     this.server.to(targetUser.socketId).emit('challengeReceived', {
-      id: challenger.userId,
-      name: challenger.name,
-      avatar: challenger.avatar
+      id: challengerUser.userId,
+      name: challengerUser.name,
+      avatar: challengerUser.avatar
     })
 
     const timeout = setTimeout(() => {
@@ -177,10 +195,13 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('acceptChallenge')
   async acceptChallenge(@MessageBody() challengerId: string, @ConnectedSocket() client: Socket) {
-    const targetUser = this.activeUsers.get(client.id)
+    const targetId = this.socketUser.get(client.id)
+    if (!targetId) return
+
+    const targetUser = this.activeUsers.get(targetId)
     if (!targetUser) return
 
-    const challengerUser = Array.from(this.activeUsers.values()).find(u => u.userId === challengerId)
+    const challengerUser = this.activeUsers.get(challengerId)
     if (!challengerUser) return client.emit('error', 'Desafiante offline')
 
     const challengeId = `${challengerId}-${targetUser.userId}`
@@ -208,8 +229,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.rooms.set(code, room)
     
-    const challengerSocket = this.server.sockets.sockets.get(challengerUser.socketId)
-    if (challengerSocket) challengerSocket.join(code)
+    this.server.in(challengerUser.socketId).socketsJoin(code)
     client.join(code)
 
     this.socketRoom.set(challengerUser.socketId, code)
@@ -220,7 +240,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('declineChallenge')
   declineChallenge(@MessageBody() challengerId: string, @ConnectedSocket() client: Socket) {
-    const targetUser = this.activeUsers.get(client.id)
+    const targetId = this.socketUser.get(client.id)
+    if (!targetId) return
+
+    const targetUser = this.activeUsers.get(targetId)
     if (!targetUser) return
 
     const challengeId = `${challengerId}-${targetUser.userId}`
@@ -230,7 +253,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.challenges.delete(challengeId)
     }
 
-    const challengerUser = Array.from(this.activeUsers.values()).find(u => u.userId === challengerId)
+    const challengerUser = this.activeUsers.get(challengerId)
     if (challengerUser) {
       this.server.to(challengerUser.socketId).emit('challengeDeclined', targetUser.name)
     }
