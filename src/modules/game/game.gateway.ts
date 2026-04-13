@@ -67,7 +67,9 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(private readonly gameService: GameService) {}
 
-  handleConnection(client: Socket) {}
+  handleConnection(client: Socket) {
+    console.log(`Socket conectado: ${client.id}`)
+  }
 
   handleDisconnect(client: Socket) {
     this.pendingCmd.delete(client.id)
@@ -108,6 +110,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     client.emit('authOk', { gems })
+    console.log(`Jogador autenticado: ${userInfo.name} (${userId})`)
     this.broadcastOnlinePlayers()
 
     // ── FIX 3: executa comando enfileirado antes do auth completar ──
