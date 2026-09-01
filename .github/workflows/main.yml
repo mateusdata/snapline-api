@@ -1,4 +1,4 @@
-name: Mantenha as APIs vivas
+name: Keep APIs Alive
 
 on:
   schedule:
@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping snapline-api
+        continue-on-error: true
         run: curl --retry 5 --retry-delay 10 --retry-all-errors --max-time 30 https://snapline-api.onrender.com/api/test
 
       - name: Ping sos-malhada-api
+        continue-on-error: true
         run: curl --retry 5 --retry-delay 10 --retry-all-errors --max-time 30 https://sosmalhadaapi.onrender.com/test
 
       - name: Ping foamgo-api
+        continue-on-error: true
         run: curl --retry 5 --retry-delay 10 --retry-all-errors --max-time 30 https://foamgoapi.onrender.com/
